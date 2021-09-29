@@ -235,34 +235,6 @@
 <span id="235">235</span>
 <span id="236">236</span>
 <span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
@@ -297,10 +269,7 @@
 <span class="doccomment">/// Custom error type used by [`WaitOnRelayChainBlock`].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">derive_more::Display</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
-	<span class="attribute">#[<span class="ident">display</span>(
-		<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Timeout while waiting for relay-chain block `{}` to be imported.&quot;</span>,
-		<span class="ident">_0</span>
-	)]</span>
+	<span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Timeout while waiting for relay-chain block `{}` to be imported.&quot;</span>, <span class="ident">_0</span>)]</span>
 	<span class="ident">Timeout</span>(<span class="ident">PHash</span>),
 	<span class="attribute">#[<span class="ident">display</span>(
 		<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Import listener closed while waiting for relay-chain block `{}` to be imported.&quot;</span>,
@@ -339,20 +308,14 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">BCE</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">WaitOnRelayChainBlock</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">BCE</span><span class="op">&gt;</span> {
 	<span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="self">Self</span> {
-			<span class="ident">backend</span>: <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">clone</span>(),
-			<span class="ident">block_chain_events</span>: <span class="self">self</span>.<span class="ident">block_chain_events</span>.<span class="ident">clone</span>(),
-		}
+		<span class="self">Self</span> { <span class="ident">backend</span>: <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">clone</span>(), <span class="ident">block_chain_events</span>: <span class="self">self</span>.<span class="ident">block_chain_events</span>.<span class="ident">clone</span>() }
 	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">BCE</span><span class="op">&gt;</span> <span class="ident">WaitOnRelayChainBlock</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">BCE</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Creates a new instance of `Self`.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">block_chain_events</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">BCE</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="self">Self</span> {
-			<span class="ident">backend</span>,
-			<span class="ident">block_chain_events</span>,
-		}
+		<span class="self">Self</span> { <span class="ident">backend</span>, <span class="ident">block_chain_events</span> }
 	}
 }
 
@@ -369,11 +332,9 @@
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">_lock</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">get_import_lock</span>().<span class="ident">read</span>();
 		<span class="kw">match</span> <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">blockchain</span>().<span class="ident">status</span>(<span class="ident">BlockId::Hash</span>(<span class="ident">hash</span>)) {
-			<span class="prelude-val">Ok</span>(<span class="ident">BlockStatus::InChain</span>) <span class="op">=</span><span class="op">&gt;</span> {
-				<span class="kw">return</span> <span class="ident">ready</span>(<span class="prelude-val">Ok</span>(())).<span class="ident">boxed</span>();
-			}
+			<span class="prelude-val">Ok</span>(<span class="ident">BlockStatus::InChain</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">ready</span>(<span class="prelude-val">Ok</span>(())).<span class="ident">boxed</span>(),
 			<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">ready</span>(<span class="prelude-val">Err</span>(<span class="ident">Error::BlockchainError</span>(<span class="ident">hash</span>, <span class="ident">err</span>))).<span class="ident">boxed</span>(),
-			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {},
 		}
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">listener</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">block_chain_events</span>.<span class="ident">import_notification_stream</span>();
@@ -437,10 +398,7 @@
 
 		<span class="ident">block_on</span>(<span class="kw">async</span> <span class="kw">move</span> {
 			<span class="comment">// Should be ready on the first poll</span>
-			<span class="macro">assert!</span>(<span class="macro">matches!</span>(
-				<span class="macro">poll!</span>(<span class="ident">wait</span>.<span class="ident">wait_on_relay_chain_block</span>(<span class="ident">hash</span>)),
-				<span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(()))
-			));
+			<span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="macro">poll!</span>(<span class="ident">wait</span>.<span class="ident">wait_on_relay_chain_block</span>(<span class="ident">hash</span>)), <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(()))));
 		});
 	}
 
@@ -457,10 +415,7 @@
 			<span class="macro">assert!</span>(<span class="macro">poll!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">future</span>).<span class="ident">is_pending</span>());
 
 			<span class="comment">// Import the block that should fire the notification</span>
-			<span class="ident">client</span>
-				.<span class="ident">import</span>(<span class="ident">BlockOrigin::Own</span>, <span class="ident">block</span>)
-				.<span class="kw">await</span>
-				.<span class="ident">expect</span>(<span class="string">&quot;Imports the block&quot;</span>);
+			<span class="ident">client</span>.<span class="ident">import</span>(<span class="ident">BlockOrigin::Own</span>, <span class="ident">block</span>).<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Imports the block&quot;</span>);
 
 			<span class="comment">// Now it should have received the notification and report that the block was imported</span>
 			<span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="macro">poll!</span>(<span class="ident">future</span>), <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(()))));
@@ -474,10 +429,7 @@
 
 		<span class="kw">let</span> <span class="ident">wait</span> <span class="op">=</span> <span class="ident">WaitOnRelayChainBlock::new</span>(<span class="ident">backend</span>, <span class="ident">client</span>.<span class="ident">clone</span>());
 
-		<span class="macro">assert!</span>(<span class="macro">matches!</span>(
-			<span class="ident">block_on</span>(<span class="ident">wait</span>.<span class="ident">wait_on_relay_chain_block</span>(<span class="ident">hash</span>)),
-			<span class="prelude-val">Err</span>(<span class="ident">Error::Timeout</span>(<span class="kw">_</span>))
-		));
+		<span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="ident">block_on</span>(<span class="ident">wait</span>.<span class="ident">wait_on_relay_chain_block</span>(<span class="ident">hash</span>)), <span class="prelude-val">Err</span>(<span class="ident">Error::Timeout</span>(<span class="kw">_</span>))));
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
@@ -493,9 +445,7 @@
 		);
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block_builder</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">init_polkadot_block_builder</span>();
 		<span class="comment">// Push an extrinsic to get a different block hash.</span>
-		<span class="ident">block_builder</span>
-			.<span class="ident">push_polkadot_extrinsic</span>(<span class="ident">ext</span>)
-			.<span class="ident">expect</span>(<span class="string">&quot;Push extrinsic&quot;</span>);
+		<span class="ident">block_builder</span>.<span class="ident">push_polkadot_extrinsic</span>(<span class="ident">ext</span>).<span class="ident">expect</span>(<span class="string">&quot;Push extrinsic&quot;</span>);
 		<span class="kw">let</span> <span class="ident">block2</span> <span class="op">=</span> <span class="ident">block_builder</span>.<span class="ident">build</span>().<span class="ident">expect</span>(<span class="string">&quot;Build second block&quot;</span>).<span class="ident">block</span>;
 		<span class="kw">let</span> <span class="ident">hash2</span> <span class="op">=</span> <span class="ident">block2</span>.<span class="ident">hash</span>();
 
@@ -509,20 +459,14 @@
 			<span class="macro">assert!</span>(<span class="macro">poll!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">future2</span>).<span class="ident">is_pending</span>());
 
 			<span class="comment">// Import the block that should fire the notification</span>
-			<span class="ident">client</span>
-				.<span class="ident">import</span>(<span class="ident">BlockOrigin::Own</span>, <span class="ident">block2</span>)
-				.<span class="kw">await</span>
-				.<span class="ident">expect</span>(<span class="string">&quot;Imports the second block&quot;</span>);
+			<span class="ident">client</span>.<span class="ident">import</span>(<span class="ident">BlockOrigin::Own</span>, <span class="ident">block2</span>).<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Imports the second block&quot;</span>);
 
 			<span class="comment">// The import notification of the second block should not make this one finish</span>
 			<span class="macro">assert!</span>(<span class="macro">poll!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">future</span>).<span class="ident">is_pending</span>());
 			<span class="comment">// Now it should have received the notification and report that the block was imported</span>
 			<span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="macro">poll!</span>(<span class="ident">future2</span>), <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(()))));
 
-			<span class="ident">client</span>
-				.<span class="ident">import</span>(<span class="ident">BlockOrigin::Own</span>, <span class="ident">block</span>)
-				.<span class="kw">await</span>
-				.<span class="ident">expect</span>(<span class="string">&quot;Imports the first block&quot;</span>);
+			<span class="ident">client</span>.<span class="ident">import</span>(<span class="ident">BlockOrigin::Own</span>, <span class="ident">block</span>).<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Imports the first block&quot;</span>);
 
 			<span class="comment">// Now it should be ready</span>
 			<span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="macro">poll!</span>(<span class="ident">future</span>), <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(()))));

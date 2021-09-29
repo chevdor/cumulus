@@ -194,14 +194,6 @@
 <span id="194">194</span>
 <span id="195">195</span>
 <span id="196">196</span>
-<span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
-<span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
@@ -333,10 +325,8 @@
 	<span class="kw">let</span> <span class="ident">current_block</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">info</span>().<span class="ident">best_number</span>.<span class="ident">saturated_into</span>();
 	<span class="kw">let</span> <span class="ident">genesis_block</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">hash</span>(<span class="number">0</span>).<span class="ident">unwrap</span>().<span class="ident">unwrap</span>();
 	<span class="kw">let</span> <span class="ident">nonce</span> <span class="op">=</span> <span class="number">0</span>;
-	<span class="kw">let</span> <span class="ident">period</span> <span class="op">=</span> <span class="ident">BlockHashCount::get</span>()
-		.<span class="ident">checked_next_power_of_two</span>()
-		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span> <span class="op">/</span> <span class="number">2</span>)
-		.<span class="ident">unwrap_or</span>(<span class="number">2</span>) <span class="kw">as</span> <span class="ident">u64</span>;
+	<span class="kw">let</span> <span class="ident">period</span> <span class="op">=</span>
+		<span class="ident">BlockHashCount::get</span>().<span class="ident">checked_next_power_of_two</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span> <span class="op">/</span> <span class="number">2</span>).<span class="ident">unwrap_or</span>(<span class="number">2</span>) <span class="kw">as</span> <span class="ident">u64</span>;
 	<span class="kw">let</span> <span class="ident">tip</span> <span class="op">=</span> <span class="number">0</span>;
 	<span class="kw">let</span> <span class="ident">extra</span>: <span class="ident">SignedExtra</span> <span class="op">=</span> (
 		<span class="ident">frame_system::CheckSpecVersion</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::new</span>(),
@@ -349,14 +339,7 @@
 	<span class="kw">let</span> <span class="ident">raw_payload</span> <span class="op">=</span> <span class="ident">SignedPayload::from_raw</span>(
 		<span class="ident">function</span>.<span class="ident">clone</span>(),
 		<span class="ident">extra</span>.<span class="ident">clone</span>(),
-		(
-			<span class="ident">VERSION</span>.<span class="ident">spec_version</span>,
-			<span class="ident">genesis_block</span>,
-			<span class="ident">current_block_hash</span>,
-			(),
-			(),
-			(),
-		),
+		(<span class="ident">VERSION</span>.<span class="ident">spec_version</span>, <span class="ident">genesis_block</span>, <span class="ident">current_block_hash</span>, (), (), ()),
 	);
 	<span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="ident">raw_payload</span>.<span class="ident">using_encoded</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">origin</span>.<span class="ident">sign</span>(<span class="ident">e</span>));
 
@@ -375,7 +358,8 @@
 	<span class="ident">dest</span>: <span class="ident">sp_keyring::AccountKeyring</span>,
 	<span class="ident">value</span>: <span class="ident">Balance</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UncheckedExtrinsic</span> {
-	<span class="kw">let</span> <span class="ident">function</span> <span class="op">=</span> <span class="ident">Call::Balances</span>(<span class="ident">pallet_balances::Call::transfer</span>(<span class="ident">dest</span>.<span class="ident">public</span>().<span class="ident">into</span>(), <span class="ident">value</span>));
+	<span class="kw">let</span> <span class="ident">function</span> <span class="op">=</span>
+		<span class="ident">Call::Balances</span>(<span class="ident">pallet_balances::Call::transfer</span> { <span class="ident">dest</span>: <span class="ident">dest</span>.<span class="ident">public</span>().<span class="ident">into</span>(), <span class="ident">value</span> });
 
 	<span class="ident">generate_extrinsic</span>(<span class="ident">client</span>, <span class="ident">origin</span>, <span class="ident">function</span>)
 }

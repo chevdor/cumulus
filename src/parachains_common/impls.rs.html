@@ -208,8 +208,6 @@
 <span id="208">208</span>
 <span id="209">209</span>
 <span id="210">210</span>
-<span id="211">211</span>
-<span id="212">212</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
@@ -398,9 +396,7 @@
 	}
 
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_test_ext</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_io::TestExternalities</span> {
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">frame_system::GenesisConfig::default</span>()
-			.<span class="ident">build_storage</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span>()
-			.<span class="ident">unwrap</span>();
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">frame_system::GenesisConfig::default</span>().<span class="ident">build_storage</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
 		<span class="comment">// We use default for brevity, but you can configure as desired if needed.</span>
 		<span class="ident">pallet_balances::GenesisConfig</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::default</span>()
 			.<span class="ident">assimilate_storage</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">t</span>)

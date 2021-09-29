@@ -653,9 +653,6 @@
 <span id="653">653</span>
 <span id="654">654</span>
 <span id="655">655</span>
-<span id="656">656</span>
-<span id="657">657</span>
-<span id="658">658</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
@@ -766,10 +763,7 @@
 <span class="doccomment">/// The version information used to identify this runtime when compiled natively.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">native_version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NativeVersion</span> {
-	<span class="ident">NativeVersion</span> {
-		<span class="ident">runtime_version</span>: <span class="ident">VERSION</span>,
-		<span class="ident">can_author_with</span>: <span class="ident">Default::default</span>(),
-	}
+	<span class="ident">NativeVersion</span> { <span class="ident">runtime_version</span>: <span class="ident">VERSION</span>, <span class="ident">can_author_with</span>: <span class="ident">Default::default</span>() }
 }
 
 <span class="doccomment">/// We assume that ~10% of the block weight is consumed by `on_initalize` handlers.</span>
@@ -1197,7 +1191,7 @@
 
 	<span class="kw">impl</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 		<span class="kw">fn</span> <span class="ident">metadata</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OpaqueMetadata</span> {
-			<span class="ident">Runtime::metadata</span>().<span class="ident">into</span>()
+			<span class="ident">OpaqueMetadata::new</span>(<span class="ident">Runtime::metadata</span>().<span class="ident">into</span>())
 		}
 	}
 

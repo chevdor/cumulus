@@ -221,16 +221,6 @@
 <span id="221">221</span>
 <span id="222">222</span>
 <span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
@@ -399,11 +389,7 @@
 		<span class="ident">extrinsics</span>: <span class="ident">sp_std::vec::Vec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">B</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span><span class="op">&gt;</span>,
 		<span class="ident">storage_proof</span>: <span class="ident">sp_trie::CompactProof</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="self">Self</span> {
-			<span class="ident">header</span>,
-			<span class="ident">extrinsics</span>,
-			<span class="ident">storage_proof</span>,
-		}
+		<span class="self">Self</span> { <span class="ident">header</span>, <span class="ident">extrinsics</span>, <span class="ident">storage_proof</span> }
 	}
 
 	<span class="doccomment">/// Convert `self` into the stored block.</span>
@@ -432,13 +418,7 @@
 	}
 
 	<span class="doccomment">/// Deconstruct into the inner parts.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deconstruct</span>(
-		<span class="self">self</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> (
-		<span class="ident">B::Header</span>,
-		<span class="ident">sp_std::vec::Vec</span><span class="op">&lt;</span><span class="ident">B::Extrinsic</span><span class="op">&gt;</span>,
-		<span class="ident">sp_trie::CompactProof</span>,
-	) {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deconstruct</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">B::Header</span>, <span class="ident">sp_std::vec::Vec</span><span class="op">&lt;</span><span class="ident">B::Extrinsic</span><span class="op">&gt;</span>, <span class="ident">sp_trie::CompactProof</span>) {
 		(<span class="self">self</span>.<span class="ident">header</span>, <span class="self">self</span>.<span class="ident">extrinsics</span>, <span class="self">self</span>.<span class="ident">storage_proof</span>)
 	}
 }

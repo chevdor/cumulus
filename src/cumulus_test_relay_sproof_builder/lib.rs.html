@@ -152,21 +152,6 @@
 <span id="152">152</span>
 <span id="153">153</span>
 <span id="154">154</span>
-<span id="155">155</span>
-<span id="156">156</span>
-<span id="157">157</span>
-<span id="158">158</span>
-<span id="159">159</span>
-<span id="160">160</span>
-<span id="161">161</span>
-<span id="162">162</span>
-<span id="163">163</span>
-<span id="164">164</span>
-<span id="165">165</span>
-<span id="166">166</span>
-<span id="167">167</span>
-<span id="168">168</span>
-<span id="169">169</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
@@ -251,10 +236,7 @@
 		}
 
 		<span class="self">self</span>.<span class="ident">hrmp_channels</span>
-			.<span class="ident">entry</span>(<span class="ident">relay_chain::v1::HrmpChannelId</span> {
-				<span class="ident">sender</span>,
-				<span class="ident">recipient</span>: <span class="self">self</span>.<span class="ident">para_id</span>,
-			})
+			.<span class="ident">entry</span>(<span class="ident">relay_chain::v1::HrmpChannelId</span> { <span class="ident">sender</span>, <span class="ident">recipient</span>: <span class="self">self</span>.<span class="ident">para_id</span> })
 			.<span class="ident">or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">AbridgedHrmpChannel</span> {
 				<span class="ident">max_capacity</span>: <span class="number">0</span>,
 				<span class="ident">max_total_size</span>: <span class="number">0</span>,
@@ -267,10 +249,7 @@
 
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_state_root_and_proof</span>(
 		<span class="self">self</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> (
-		<span class="ident">polkadot_primitives::v1::Hash</span>,
-		<span class="ident">sp_state_machine::StorageProof</span>,
-	) {
+	) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">polkadot_primitives::v1::Hash</span>, <span class="ident">sp_state_machine::StorageProof</span>) {
 		<span class="kw">let</span> (<span class="ident">db</span>, <span class="ident">root</span>) <span class="op">=</span> <span class="ident">MemoryDB</span>::<span class="op">&lt;</span><span class="ident">HashFor</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v1::Block</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::default_with_root</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">sp_state_machine::TrieBackend::new</span>(<span class="ident">db</span>, <span class="ident">root</span>);
 
@@ -283,10 +262,7 @@
 				<span class="ident">backend</span>.<span class="ident">insert</span>(<span class="macro">vec!</span>[(<span class="prelude-val">None</span>, <span class="macro">vec!</span>[(<span class="ident">key</span>, <span class="prelude-val">Some</span>(<span class="ident">value</span>))])]);
 			};
 
-			<span class="ident">insert</span>(
-				<span class="ident">relay_chain::well_known_keys::ACTIVE_CONFIG</span>.<span class="ident">to_vec</span>(),
-				<span class="self">self</span>.<span class="ident">host_config</span>.<span class="ident">encode</span>(),
-			);
+			<span class="ident">insert</span>(<span class="ident">relay_chain::well_known_keys::ACTIVE_CONFIG</span>.<span class="ident">to_vec</span>(), <span class="self">self</span>.<span class="ident">host_config</span>.<span class="ident">encode</span>());
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">dmq_mqc_head</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">dmq_mqc_head</span> {
 				<span class="ident">insert</span>(
 					<span class="ident">relay_chain::well_known_keys::dmq_mqc_head</span>(<span class="self">self</span>.<span class="ident">para_id</span>),
@@ -320,16 +296,10 @@
 				);
 			}
 			<span class="kw">for</span> (<span class="ident">channel</span>, <span class="ident">metadata</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">hrmp_channels</span> {
-				<span class="ident">insert</span>(
-					<span class="ident">relay_chain::well_known_keys::hrmp_channels</span>(<span class="ident">channel</span>),
-					<span class="ident">metadata</span>.<span class="ident">encode</span>(),
-				);
+				<span class="ident">insert</span>(<span class="ident">relay_chain::well_known_keys::hrmp_channels</span>(<span class="ident">channel</span>), <span class="ident">metadata</span>.<span class="ident">encode</span>());
 			}
 
-			<span class="ident">insert</span>(
-				<span class="ident">relay_chain::well_known_keys::CURRENT_SLOT</span>.<span class="ident">to_vec</span>(),
-				<span class="self">self</span>.<span class="ident">current_slot</span>.<span class="ident">encode</span>(),
-			);
+			<span class="ident">insert</span>(<span class="ident">relay_chain::well_known_keys::CURRENT_SLOT</span>.<span class="ident">to_vec</span>(), <span class="self">self</span>.<span class="ident">current_slot</span>.<span class="ident">encode</span>());
 		}
 
 		<span class="kw">let</span> <span class="ident">root</span> <span class="op">=</span> <span class="ident">backend</span>.<span class="ident">root</span>().<span class="ident">clone</span>();

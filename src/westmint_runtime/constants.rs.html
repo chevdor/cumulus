@@ -105,13 +105,13 @@
 
 <span class="doccomment">/// Fee-related.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fee</span> {
-	<span class="kw">use</span> <span class="ident">node_primitives::Balance</span>;
-	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;
 	<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{
 		<span class="ident">constants::ExtrinsicBaseWeight</span>, <span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>,
 		<span class="ident">WeightToFeePolynomial</span>,
 	};
+	<span class="kw">use</span> <span class="ident">node_primitives::Balance</span>;
 	<span class="kw">use</span> <span class="ident">smallvec::smallvec</span>;
+	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;
 
 	<span class="doccomment">/// The block saturation level. Fees will be updates based on this value.</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TARGET_BLOCK_FULLNESS</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::from_percent</span>(<span class="number">25</span>);

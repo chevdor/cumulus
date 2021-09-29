@@ -113,12 +113,6 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
-<span id="116">116</span>
-<span id="117">117</span>
-<span id="118">118</span>
-<span id="119">119</span>
-<span id="120">120</span>
-<span id="121">121</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
@@ -192,9 +186,7 @@
 		<span class="prelude-val">None</span>,
 		<span class="prelude-val">None</span>,
 		<span class="prelude-val">None</span>,
-		<span class="ident">Extensions</span> {
-			<span class="ident">para_id</span>: <span class="ident">id</span>.<span class="ident">into</span>(),
-		},
+		<span class="ident">Extensions</span> { <span class="ident">para_id</span>: <span class="ident">id</span>.<span class="ident">into</span>() },
 	)
 }
 
@@ -232,11 +224,7 @@
 		},
 		<span class="ident">parachain_system</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">balances</span>: <span class="ident">cumulus_test_runtime::BalancesConfig</span> {
-			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>
-				.<span class="ident">iter</span>()
-				.<span class="ident">cloned</span>()
-				.<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">60</span>))
-				.<span class="ident">collect</span>(),
+			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">60</span>)).<span class="ident">collect</span>(),
 		},
 		<span class="ident">sudo</span>: <span class="ident">cumulus_test_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
 	}

@@ -109,10 +109,6 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
-<span id="112">112</span>
-<span id="113">113</span>
-<span id="114">114</span>
-<span id="115">115</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
@@ -155,11 +151,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Block</span>: <span class="ident">BlockT</span><span class="op">&gt;</span> <span class="ident">ActiveCandidateRecovery</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> {
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">overseer_handle</span>: <span class="ident">OverseerHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="self">Self</span> {
-			<span class="ident">recoveries</span>: <span class="ident">Default::default</span>(),
-			<span class="ident">candidates</span>: <span class="ident">Default::default</span>(),
-			<span class="ident">overseer_handle</span>,
-		}
+		<span class="self">Self</span> { <span class="ident">recoveries</span>: <span class="ident">Default::default</span>(), <span class="ident">candidates</span>: <span class="ident">Default::default</span>(), <span class="ident">overseer_handle</span> }
 	}
 
 	<span class="doccomment">/// Recover the given `pending_candidate`.</span>
@@ -196,14 +188,14 @@
 							<span class="string">&quot;Availability recovery failed&quot;</span>,
 						);
 						(<span class="ident">block_hash</span>, <span class="prelude-val">None</span>)
-					}
+					},
 					<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
 						<span class="macro">tracing::debug!</span>(
 							<span class="ident">target</span>: <span class="kw">crate</span><span class="ident">::LOG_TARGET</span>,
 							<span class="string">&quot;Availability recovery oneshot channel closed&quot;</span>,
 						);
 						(<span class="ident">block_hash</span>, <span class="prelude-val">None</span>)
-					}
+					},
 				}
 			}
 			.<span class="ident">boxed</span>(),
@@ -222,7 +214,7 @@
 		<span class="kw">loop</span> {
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">res</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">recoveries</span>.<span class="ident">next</span>().<span class="kw">await</span> {
 				<span class="self">self</span>.<span class="ident">candidates</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">res</span>.<span class="number">0</span>);
-				<span class="kw">return</span> <span class="ident">res</span>;
+				<span class="kw">return</span> <span class="ident">res</span>
 			} <span class="kw">else</span> {
 				<span class="macro">futures::pending!</span>()
 			}

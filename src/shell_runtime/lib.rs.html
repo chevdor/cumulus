@@ -391,7 +391,6 @@
 <span id="391">391</span>
 <span id="392">392</span>
 <span id="393">393</span>
-<span id="394">394</span>
 </pre><pre class="rust">
 <span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
@@ -417,6 +416,8 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="macro">include!</span>(<span class="macro">concat!</span>(<span class="macro">env!</span>(<span class="string">&quot;OUT_DIR&quot;</span>), <span class="string">&quot;/wasm_binary.rs&quot;</span>));
 
+<span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
+<span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
 <span class="kw">use</span> <span class="ident">sp_api::impl_runtime_apis</span>;
 <span class="kw">use</span> <span class="ident">sp_core::OpaqueMetadata</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
@@ -468,10 +469,7 @@
 <span class="doccomment">/// The version information used to identify this runtime when compiled natively.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">native_version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NativeVersion</span> {
-	<span class="ident">NativeVersion</span> {
-		<span class="ident">runtime_version</span>: <span class="ident">VERSION</span>,
-		<span class="ident">can_author_with</span>: <span class="ident">Default::default</span>(),
-	}
+	<span class="ident">NativeVersion</span> { <span class="ident">runtime_version</span>: <span class="ident">VERSION</span>, <span class="ident">can_author_with</span>: <span class="ident">Default::default</span>() }
 }
 
 <span class="doccomment">/// We assume that ~10% of the block weight is consumed by `on_initialize` handlers.</span>
@@ -636,7 +634,7 @@
 }
 
 <span class="doccomment">/// Simple implementation which fails any transaction which is signed.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">sp_core::RuntimeDebug</span>, <span class="ident">codec::Encode</span>, <span class="ident">codec::Decode</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Default</span>, <span class="ident">sp_core::RuntimeDebug</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DisallowSigned</span>;
 <span class="kw">impl</span> <span class="ident">sp_runtime::traits::SignedExtension</span> <span class="kw">for</span> <span class="ident">DisallowSigned</span> {
 	<span class="kw">const</span> <span class="ident">IDENTIFIER</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;DisallowSigned&quot;</span>;
@@ -714,7 +712,7 @@
 
 	<span class="kw">impl</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 		<span class="kw">fn</span> <span class="ident">metadata</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OpaqueMetadata</span> {
-			<span class="ident">Runtime::metadata</span>().<span class="ident">into</span>()
+			<span class="ident">OpaqueMetadata::new</span>(<span class="ident">Runtime::metadata</span>().<span class="ident">into</span>())
 		}
 	}
 
