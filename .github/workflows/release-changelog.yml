@@ -2,9 +2,9 @@ name: Release - Changelog
 
 on:
   push:
-    tags:
-      - "polkadot-v*"
-      - "parachains-v*"
+    branches:
+      - polkadot-v[0-9]+.[0-9]+.[0-9]+
+      - parachains-v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
   changelog:
