@@ -7,11 +7,15 @@ on:
 jobs:
   ping_matrix:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        channel:
+        - '!NTogofoetwjbTwOoPi:matrix.parity.io' # Internal release-notes channel
     steps:
       - name: send message
         uses: s3krit/matrix-message-action@v0.0.3
         with:
-          room_id: ${{ secrets.MATRIX_ROOM_ID }}
+          room_id: ${{ matrix.channel }}
           access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
           message: |
             A (pre)release has been ${{github.event.action}} in **${{github.event.repository.full_name}}:**<br/>
