@@ -132,22 +132,4 @@ jobs:
 
       - uses: actions/download-artifact@v2
 
-      - name: Upload Debian package
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_draft.outputs.asset_upload_url }}
-          asset_path: "linux/subwasm_linux_amd64.deb"
-          asset_name: "subwasm_linux_amd64_${{ env.RELEASE_VERSION }}.deb"
-          asset_content_type: application/vnd.debian.binary-package
-
-      - name: Upload MacOS archive
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create_draft.outputs.asset_upload_url }}
-          asset_path: "macos/subwasm_macos.tar.gz"
-          asset_name: "subwasm_macos_${{ env.RELEASE_VERSION }}.tar.gz"
-          asset_content_type: application/gzip
+     
