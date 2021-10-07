@@ -13,12 +13,6 @@ on:
       - rococo-v*
       - shell-v*
 
-    paths-ignore:
-      - "docker"
-      - "docs"
-      - "scripts"
-      - "test"
-
 jobs:
   srtool:
     runs-on: ubuntu-latest

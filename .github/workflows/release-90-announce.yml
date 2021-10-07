@@ -1,4 +1,4 @@
-name: Pushes release notes to a Matrix room
+name: Release - Announce to Matrix
 on:
   release:
     types:
