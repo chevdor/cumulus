@@ -3,13 +3,12 @@ name: Release - Prepare
 on:
   push:
     branches:
-      # Those are in use today
-      - statemine-v[0-9]+
-      - polkadot-v[0-9]+.[0-9]+.[0-9]+
+      # As in use today
+      - release-statemine-v[0-9]+
 
       # This is how it should become
-      - release-cumulus-v[0-9]+.[0-9]+.[0-9]+
-      - release-parachains-v[0-9]+.[0-9]+.[0-9]+
+      # - release-cumulus-v[0-9]+.[0-9]+.[0-9]+
+      # - release-parachains-v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
   tag_rc:
@@ -41,6 +40,7 @@ jobs:
             echo "::set-output name=new_tag::$version-rc1"
             echo "::set-output name=first_rc::true"
           fi
+
       - name: Apply new tag
         uses: tvdias/github-tagger@v0.0.2
         with:

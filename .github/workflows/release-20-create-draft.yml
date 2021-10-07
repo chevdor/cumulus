@@ -1,15 +1,16 @@
-name: Release - Prepare
+name: Release - Create Draft
 
 on:
   push:
-    branches:
+    tags:
       # Those are in use today
-      - statemine-v[0-9]+
-      - polkadot-v[0-9]+.[0-9]+.[0-9]+
+      - statemine-v[0-9]+(-rc[0-9]+)?
+      # - polkadot-v[0-9]+.[0-9]+.[0-9]+
 
-      # This is how it should become
-      - release-cumulus-v[0-9]+.[0-9]+.[0-9]+
-      - release-parachains-v[0-9]+.[0-9]+.[0-9]+
+      # # This is how it should become
+      # - parachains-v[0-9]+(-rc[0-9]+)?
+      # - release-cumulus-v[0-9]+.[0-9]+.[0-9]+
+      # - release-parachains-v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
   create_draft:

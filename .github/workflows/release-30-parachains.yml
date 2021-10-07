@@ -1,17 +1,12 @@
 # This Github Workflows triggers the release for parachains.
 # See more under ./docs/releases.md
-# This workflow does NOT release the code used by parachains builders
 
 name: Release - Parachains
 
 on:
   push:
     tags:
-      - westmint-v* # Westend
-      - statemine-v* # Kusama
-      - statemint-v* # Polkadot
-      - rococo-v*
-      - shell-v*
+      - parachains-v*
 
 jobs:
   srtool:
