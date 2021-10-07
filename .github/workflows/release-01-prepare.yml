@@ -3,42 +3,71 @@ name: Release - Changelog
 on:
   push:
     branches:
+      # Those are in use today
+      - statemine-v[0-9]+
       - polkadot-v[0-9]+.[0-9]+.[0-9]+
-      - parachains-v[0-9]+.[0-9]+.[0-9]+
+
+      # This is how it should become
+      - release-cumulus-v[0-9]+.[0-9]+.[0-9]+
+      - release-parachains-v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
-  changelog:
-    env:
-      TARGET_DIR: target/release
-
+  tag_rc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install latest nightly
-        uses: actions-rs/toolchain@v1
+      - name: Checkout sources
+        uses: actions/checkout@v2
         with:
-          toolchain: nightly
-          override: true
-          components: rustfmt, clippy
+          fetch-depth: 0
 
-      - name: Install cargo deb
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cargo-deb
-
-      - name: Build debian package
+      - id: compute_tag
+        name: Compute next rc tag
         shell: bash
         run: |
-          cargo deb -p subwasm -o "subwasm_linux_amd64.deb"
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+          # Get last rc tag if exists, else set it to {version}-rc1
+          version=${GITHUB_REF#refs/heads/release-}
+          echo "$version"
+          echo "::set-output name=version::$version"
+          git tag -l
+          last_rc=$(git tag -l "$version-rc*" | sort -V | tail -n 1)
+          if [ -n "$last_rc" ]; then
+            suffix=$(echo "$last_rc" | grep -Eo '[0-9]+$')
+            echo $suffix
+            ((suffix++))
+            echo $suffix
+            echo "::set-output name=new_tag::$version-rc$suffix"
+            echo "::set-output name=first_rc::false"
+          else
+            echo "::set-output name=new_tag::$version-rc1"
+            echo "::set-output name=first_rc::true"
+          fi
+      - name: Apply new tag
+        uses: tvdias/github-tagger@v0.0.2
         with:
-          name: linux
-          path: |
-            subwasm_linux_amd64.deb
+          # We can't use the normal GITHUB_TOKEN for the following reason:
+          # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#triggering-new-workflows-using-a-personal-access-token
+          # RELEASE_BRANCH_TOKEN requires public_repo OAuth scope
+          repo-token: "${{ secrets.RELEASE_BRANCH_TOKEN }}"
+          tag: ${{ steps.compute_tag.outputs.new_tag }}
+
+      - id: create-issue
+        uses: JasonEtco/create-an-issue@v2
+        # Only create the issue if it's the first release candidate
+        if: steps.compute_tag.outputs.first_rc == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.compute_tag.outputs.version }}
+        with:
+          filename: .github/ISSUE_TEMPLATE/release.md
+
+      # - name: Send Matrix message
+      #   uses: s3krit/matrix-message-action@v0.0.3
+      #   if: steps.create-issue.outputs.url != ''
+      #   with:
+      #     room_id: ${{ secrets.INTERNAL_POLKADOT_MATRIX_ROOM_ID }}
+      #     access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
+      #     server: "matrix.parity.io"
+      #     message: "Release process for Cumulus ${{ steps.compute_tag.outputs.version }} has been started. Tracking issue: ${{ steps.create-issue.outputs.url }}"
 
   create_draft:
     needs: ["changelog"]
@@ -77,8 +106,6 @@ jobs:
 
       - name: Render release notes
         run: |
-          export DEBIAN_URL="https://github.com/chevdor/subwasm/releases/download/${{ env.RELEASE_VERSION }}/subwasm_linux_amd64_${{ env.RELEASE_VERSION }}.deb"
-          export MACOS_TGZ_URL="https://github.com/chevdor/subwasm/releases/download/${{ env.RELEASE_VERSION }}/subwasm_macos_${{ env.RELEASE_VERSION }}.tar.gz"
           export CHANGELOG=$(cat changelog.md)
           tera --env --env-only --template templates/release.md > RELEASE_NOTES.md
 

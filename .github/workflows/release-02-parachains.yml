@@ -7,7 +7,11 @@ name: Release - Parachains
 on:
   push:
     tags:
-      - "parachains-v*"
+      - westmint-v* # Westend
+      - statemine-v* # Kusama
+      - statemint-v* # Polkadot
+      - rococo-v*
+      - shell-v*
 
     paths-ignore:
       - "docker"
