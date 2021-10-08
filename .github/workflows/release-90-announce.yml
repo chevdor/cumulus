@@ -10,14 +10,14 @@ jobs:
     strategy:
       matrix:
         channel:
-        # - ${{ secrets.INTERNAL_POLKADOT_MATRIX_ROOM_ID }}
-          - "!pkwWKchQKKfctAzMfe:matrix.parity.io"
+          - ${{ secrets.INTERNAL_POLKADOT_MATRIX_ROOM_ID }}
 
     steps:
       - name: send message
         uses: s3krit/matrix-message-action@v0.0.3
         with:
-          room_id: ${{ matrix.channel }}
+          # room_id: ${{ matrix.channel }}
+          room_id: "!pkwWKchQKKfctAzMfe:matrix.parity.io"
           access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
           message: |
             A (pre)release has been ${{github.event.action}} in **${{github.event.repository.full_name}}:**<br/>
