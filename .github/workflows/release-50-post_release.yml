@@ -1,0 +1,31 @@
+name: Release - Post release
+
+on:
+  release:
+    types:
+      - published
+
+      # The following happen when the drafts are created
+      # - released
+      # - prereleased
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extrac Binary
+        run: |
+          echo NOP
+          echo ${{github.ref}}
+          echo ${{github.event.action}}
+          echo ${{github.event.repository.full_name}}
+          echo ${{github.event.release.tag_name}}
+          echo ${{github.event.release.html_url}}
+
+      - name: Build injected image
+        run: |
+
+      - name: Tag Docker image
+
+      - name: Publish Docker image

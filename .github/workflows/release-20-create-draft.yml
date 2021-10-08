@@ -57,7 +57,7 @@ jobs:
           SHORT_SHA: ${{ env.SHORT_SHA }}
         run: |
           export CHANGELOG=$(cat changelog.md)
-          tera --env --env-only --env-key env --template templates/release.md > RELEASE_NOTES.md
+          tera --env --env-only --env-key env --template templates/release_parachains.md > RELEASE_NOTES.md
 
       - name: Create Release
         id: create-release

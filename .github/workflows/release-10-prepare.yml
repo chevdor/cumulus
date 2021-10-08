@@ -58,7 +58,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.compute_tag.outputs.version }}
         with:
-          filename: .github/ISSUE_TEMPLATE/release.md
+          filename: .github/ISSUE_TEMPLATE/release_parachains.md
 
       - name: Send Matrix message
         uses: s3krit/matrix-message-action@v0.0.3
