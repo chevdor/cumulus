@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         channel:
-        - ${{ secrets.MATRIX_ANNOUNCE_INTERNAL_ROOM }}
+        - ${{ secrets.INTERNAL_POLKADOT_MATRIX_ROOM_ID }}
 
     steps:
       - name: send message
