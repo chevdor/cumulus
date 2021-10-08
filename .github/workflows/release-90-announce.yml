@@ -10,7 +10,8 @@ jobs:
     strategy:
       matrix:
         channel:
-        - '!NTogofoetwjbTwOoPi:matrix.parity.io' # Internal release-notes channel
+        - ${{ secrets.MATRIX_ANNOUNCE_INTERNAL_ROOM }}
+
     steps:
       - name: send message
         uses: s3krit/matrix-message-action@v0.0.3

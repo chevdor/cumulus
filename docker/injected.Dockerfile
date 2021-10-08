@@ -35,15 +35,15 @@ RUN apt-get update && \
 	mkdir -p /specs
 
 # add polkadot-collator binary to the docker image
-COPY ./target/release/polkadot-collator /usr/local/bin
+COPY ./target/release/${IMAGE_NAME} /usr/local/bin
 COPY ./polkadot-parachains/res/*.json /specs/
 
 USER polkadot
 
 # check if executable works in this container
-RUN /usr/local/bin/polkadot-collator --version
+RUN /usr/local/bin/${IMAGE_NAME} --version
 
-EXPOSE 30333 9933 9944
+EXPOSE 30333 9933 9944 9615
 VOLUME ["/polkadot"]
 
-ENTRYPOINT ["/usr/local/bin/polkadot-collator"]
+ENTRYPOINT ["/usr/local/bin/${IMAGE_NAME}"]

@@ -11,21 +11,58 @@ on:
 
 jobs:
   docker:
+    if: |
+      (startsWith(github.event.release.tag_name, 'statemine') ||
+      startsWith(github.event.release.tag_name, 'parachains'))
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        binary:
+          - polkadot-collator
     steps:
-      - name: Extrac Binary
+      # First we need the donwload URL
+      - name: Extract Binary URL
+        id: extract_url
         run: |
-          echo NOP
-          echo ${{github.ref}}
-          echo ${{github.event.action}}
-          echo ${{github.event.repository.full_name}}
-          echo ${{github.event.release.tag_name}}
-          echo ${{github.event.release.html_url}}
+          URL="${{ github.event.repository.html_url }}/releases/download/${{ github.event.release.tag_name }}/${{ matrix.binary }}"
+          echo "::set-output name=url::$URL"
+
+          echo Binary URL = $URL
+      - name: Download ${{ matrix.binary }}
+        env:
+          URL: ${{ steps.extract_url.outputs.url }}
+        run: |
+          echo Fetching ${{ matrix.binary }} from $URL
+          wget -L $URL -O ${{ matrix.binary }}
+          mkdir -p target/release
+          cp ${{ matrix.binary }} target/release/
+
+      - name: Get tag for ${{ matrix.binary }}
+        id: get_tag
+        run: |
+          RESPONSE=$(${{ matrix.binary }} --version)
+          echo $RESPONSE
+          TAG=$(echo $RESPONSE | awk '{ print $2}')
+          echo "::set-output name=tag::$TAG"
+
+      - name: Checkout sources for the Dockerfile
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Build injected image
+        env:
+          IMAGE_NAME: ${{ matrix.binary }}
         run: |
+          ./docker/scripts/build-injected-image.sh
 
       - name: Tag Docker image
+        env:
+          OWNER: parity
+          TAG: ${{ steps.get_tag.outputs.tag }}
+        run: |
+          docker tag $OWNER/${{ matrix.binary }} $OWNER/${{ matrix.binary }}:$TAG
 
       - name: Publish Docker image
+        run: |
+          docker images
