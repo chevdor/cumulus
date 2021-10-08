@@ -6,7 +6,8 @@ name: Release - Parachains
 on:
   push:
     tags:
-      - parachains-v*
+      - "statemine-v[0-9]+*"
+      - "parachains-v*"
 
 jobs:
   srtool:
