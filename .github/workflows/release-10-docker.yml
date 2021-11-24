@@ -1,9 +1,13 @@
 name: Release - Docker
+
 on:
   release:
     types:
       - published
       - edited
+      - prereleased
+      - released
+      - created
 
 jobs:
   ping_matrix:
@@ -23,7 +27,13 @@ jobs:
           # https://github.com/paritytech/cumulus/releases/download/statemine-v6.0.0/polkadot-collator
 
       - name: Check files
+        run: |
+          echo TODO
 
       - name: Build injected image
+        run: |
+          echo TODO
 
       - name: Tag and Publish
+        run: |
+          echo TODO
