@@ -1,5 +1,4 @@
-name: Release - Docker build and publish an injected Docker image
-
+name: Release - Docker
 on:
   release:
     types:
