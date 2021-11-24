@@ -5,12 +5,9 @@ on:
     types:
       - published
       - edited
-      - prereleased
-      - released
-      - created
 
 jobs:
-  ping_matrix:
+  docker_build_publish:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch files from release
@@ -23,12 +20,24 @@ jobs:
           echo Prerelease: ${{ github.event.release.prerelease }}
           echo Assets: ${{ github.event.release.assets }}
 
-          # collator binary sample
-          # https://github.com/paritytech/cumulus/releases/download/statemine-v6.0.0/polkadot-collator
+          for f in polkadot-collator polkadot-collator.asc polkadot-collator.sha256; do
+            URL=https://github.com/${{ github.event.repository.full_name }}/releases/download/${{ github.event.release.tag_name }}/polkadot-collator
+            echo Fetching $f from $URL
+            wget $URL -O $f
+          done
+          ls -al
 
       - name: Check files
         run: |
           echo TODO
+          ls -al *collator*
+          shasum -a 256 -c polkadot-collator.sha256
+          sha_result=$?
+          echo sha_result: $sha_result
+
+          gpg --verify $BINARY.asc
+          gpg_result=$?
+          echo gpg_result: $gpg_result
 
       - name: Build injected image
         run: |
