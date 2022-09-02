@@ -6,7 +6,7 @@ specs:
     filter:
       id: [ single_b, single_d, single_u, single_s]
     labels: [ B1, P1, D1, X1, T4 ]
-    expected: trueish
+    expected: false
 
   - name: Fail - Require release label
     filter:
