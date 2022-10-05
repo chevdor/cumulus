@@ -1,102 +1,102 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `polkadot-parachains&#x2F;statemine&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../statemine_runtime/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input"name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parachains/runtimes/assets/statemine/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../statemine_runtime/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../statemine_runtime/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../statemine_runtime/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -979,17 +979,7 @@
 <span id="979">979</span>
 <span id="980">980</span>
 <span id="981">981</span>
-<span id="982">982</span>
-<span id="983">983</span>
-<span id="984">984</span>
-<span id="985">985</span>
-<span id="986">986</span>
-<span id="987">987</span>
-<span id="988">988</span>
-<span id="989">989</span>
-<span id="990">990</span>
-</pre><pre class="rust">
-<span class="comment">// Copyright (C) 2021 Parity Technologies (UK) Ltd.</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (C) 2021-2022 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// SPDX-License-Identifier: Apache-2.0</span>
 
 <span class="comment">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -1004,7 +994,9 @@
 <span class="comment">// See the License for the specific language governing permissions and</span>
 <span class="comment">// limitations under the License.</span>
 
-<span class="doccomment">//! Statemine runtime.</span>
+<span class="doccomment">//! # Statemine Runtime</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Statemine is the canary network for its Polkadot cousin, Statemint.</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;256&quot;</span>]</span>
@@ -1015,14 +1007,16 @@
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">constants</span>;
 <span class="kw">mod</span> <span class="ident">weights</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">xcm_config</span>;
 
+<span class="kw">use</span> <span class="ident">cumulus_pallet_parachain_system::RelayNumberStrictlyIncreases</span>;
 <span class="kw">use</span> <span class="ident">sp_api::impl_runtime_apis</span>;
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">crypto::KeyTypeId</span>, <span class="ident">OpaqueMetadata</span>};
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
 	<span class="ident">create_runtime_str</span>, <span class="ident">generic</span>, <span class="ident">impl_opaque_keys</span>,
-	<span class="ident">traits</span>::{<span class="ident">AccountIdLookup</span>, <span class="ident">BlakeTwo256</span>, <span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>},
+	<span class="ident">traits</span>::{<span class="ident">AccountIdLookup</span>, <span class="ident">BlakeTwo256</span>, <span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>, <span class="ident">ConvertInto</span>},
 	<span class="ident">transaction_validity</span>::{<span class="ident">TransactionSource</span>, <span class="ident">TransactionValidity</span>},
-	<span class="ident">ApplyExtrinsicResult</span>, <span class="ident">Perbill</span>,
+	<span class="ident">ApplyExtrinsicResult</span>,
 };
 
 <span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
@@ -1033,42 +1027,35 @@
 <span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>, <span class="ident">MaxEncodedLen</span>};
 <span class="kw">use</span> <span class="ident">constants</span>::{<span class="ident">currency</span>::<span class="kw-2">*</span>, <span class="ident">fee::WeightToFee</span>};
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
-	<span class="ident">construct_runtime</span>, <span class="ident">match_type</span>, <span class="ident">parameter_types</span>,
-	<span class="ident">traits</span>::{<span class="ident">Contains</span>, <span class="ident">Everything</span>, <span class="ident">InstanceFilter</span>},
-	<span class="ident">weights</span>::{
-		<span class="ident">constants</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>},
-		<span class="ident">DispatchClass</span>, <span class="ident">IdentityFee</span>, <span class="ident">Weight</span>,
-	},
+	<span class="ident">construct_runtime</span>,
+	<span class="ident">dispatch::DispatchClass</span>,
+	<span class="ident">parameter_types</span>,
+	<span class="ident">traits</span>::{<span class="ident">AsEnsureOriginWithArg</span>, <span class="ident">EitherOfDiverse</span>, <span class="ident">InstanceFilter</span>},
+	<span class="ident">weights</span>::{<span class="ident">ConstantMultiplier</span>, <span class="ident">Weight</span>},
 	<span class="ident">PalletId</span>, <span class="ident">RuntimeDebug</span>,
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{
 	<span class="ident">limits</span>::{<span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>},
-	<span class="ident">EnsureOneOf</span>, <span class="ident">EnsureRoot</span>,
+	<span class="ident">EnsureRoot</span>, <span class="ident">EnsureSigned</span>,
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parachains_common</span> <span class="kw">as</span> <span class="ident">common</span>;
 <span class="kw">use</span> <span class="ident">parachains_common</span>::{
-	<span class="ident">impls</span>::{<span class="ident">DealWithFees</span>, <span class="ident">NonZeroIssuance</span>},
+	<span class="ident">impls</span>::{<span class="ident">AssetsToBlockAuthor</span>, <span class="ident">DealWithFees</span>},
 	<span class="ident">opaque</span>, <span class="ident">AccountId</span>, <span class="ident">AssetId</span>, <span class="ident">AuraId</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">Header</span>, <span class="ident">Index</span>, <span class="ident">Signature</span>,
 	<span class="ident">AVERAGE_ON_INITIALIZE_RATIO</span>, <span class="ident">HOURS</span>, <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>, <span class="ident">NORMAL_DISPATCH_RATIO</span>, <span class="ident">SLOT_DURATION</span>,
 };
+<span class="kw">use</span> <span class="ident">xcm_config</span>::{<span class="ident">KsmLocation</span>, <span class="ident">XcmConfig</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">test</span>))]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::BuildStorage</span>;
 
 <span class="comment">// Polkadot imports</span>
-<span class="kw">use</span> <span class="ident">pallet_xcm</span>::{<span class="ident">EnsureXcm</span>, <span class="ident">IsMajorityOfBody</span>, <span class="ident">XcmPassthrough</span>};
-<span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::Sibling</span>;
-<span class="kw">use</span> <span class="ident">polkadot_runtime_common</span>::{<span class="ident">BlockHashCount</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">SlowAdjustingFeeUpdate</span>};
-<span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">xcm_builder</span>::{
-	<span class="ident">AccountId32Aliases</span>, <span class="ident">AllowTopLevelPaidExecutionFrom</span>, <span class="ident">AllowUnpaidExecutionFrom</span>,
-	<span class="ident">AsPrefixedGeneralIndex</span>, <span class="ident">ConvertedConcreteAssetId</span>, <span class="ident">CurrencyAdapter</span>, <span class="ident">EnsureXcmOrigin</span>,
-	<span class="ident">FixedWeightBounds</span>, <span class="ident">FungiblesAdapter</span>, <span class="ident">IsConcrete</span>, <span class="ident">LocationInverter</span>, <span class="ident">NativeAsset</span>,
-	<span class="ident">ParentAsSuperuser</span>, <span class="ident">ParentIsDefault</span>, <span class="ident">RelayChainAsNative</span>, <span class="ident">SiblingParachainAsNative</span>,
-	<span class="ident">SiblingParachainConvertsVia</span>, <span class="ident">SignedAccountId32AsNative</span>, <span class="ident">SignedToAccountId32</span>,
-	<span class="ident">SovereignSignedViaLocation</span>, <span class="ident">TakeWeightCredit</span>, <span class="ident">UsingComponents</span>,
-};
-<span class="kw">use</span> <span class="ident">xcm_executor</span>::{<span class="ident">traits::JustTry</span>, <span class="ident">Config</span>, <span class="ident">XcmExecutor</span>};
+<span class="kw">use</span> <span class="ident">pallet_xcm</span>::{<span class="ident">EnsureXcm</span>, <span class="ident">IsMajorityOfBody</span>};
+<span class="kw">use</span> <span class="ident">polkadot_runtime_common</span>::{<span class="ident">BlockHashCount</span>, <span class="ident">SlowAdjustingFeeUpdate</span>};
+<span class="kw">use</span> <span class="ident">xcm::latest::BodyId</span>;
+<span class="kw">use</span> <span class="ident">xcm_executor::XcmExecutor</span>;
+
+<span class="kw">use</span> <span class="ident">weights</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>, <span class="ident">RocksDbWeight</span>};
 
 <span class="macro">impl_opaque_keys!</span> {
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionKeys</span> {
@@ -1081,15 +1068,16 @@
 	<span class="ident">spec_name</span>: <span class="macro">create_runtime_str!</span>(<span class="string">&quot;statemine&quot;</span>),
 	<span class="ident">impl_name</span>: <span class="macro">create_runtime_str!</span>(<span class="string">&quot;statemine&quot;</span>),
 	<span class="ident">authoring_version</span>: <span class="number">1</span>,
-	<span class="ident">spec_version</span>: <span class="number">3</span>,
+	<span class="ident">spec_version</span>: <span class="number">9300</span>,
 	<span class="ident">impl_version</span>: <span class="number">0</span>,
 	<span class="ident">apis</span>: <span class="ident">RUNTIME_API_VERSIONS</span>,
-	<span class="ident">transaction_version</span>: <span class="number">1</span>,
+	<span class="ident">transaction_version</span>: <span class="number">8</span>,
+	<span class="ident">state_version</span>: <span class="number">0</span>,
 };
 
 <span class="doccomment">/// The version information used to identify this runtime when compiled natively.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">native_version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NativeVersion</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">native_version</span>() -&gt; <span class="ident">NativeVersion</span> {
 	<span class="ident">NativeVersion</span> { <span class="ident">runtime_version</span>: <span class="ident">VERSION</span>, <span class="ident">can_author_with</span>: <span class="ident">Default::default</span>() }
 }
 
@@ -1118,28 +1106,21 @@
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SS58Prefix</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">2</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BaseFilter</span>;
-<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">Call</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BaseFilter</span> {
-	<span class="kw">fn</span> <span class="ident">contains</span>(<span class="ident">_c</span>: <span class="kw-2">&amp;</span><span class="ident">Call</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-		<span class="bool-val">true</span>
-	}
-}
-
 <span class="comment">// Configure FRAME pallets to include in runtime.</span>
 <span class="kw">impl</span> <span class="ident">frame_system::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">BaseCallFilter</span> <span class="op">=</span> <span class="ident">BaseFilter</span>;
+	<span class="kw">type</span> <span class="ident">BaseCallFilter</span> <span class="op">=</span> <span class="ident">frame_support::traits::Everything</span>;
 	<span class="kw">type</span> <span class="ident">BlockWeights</span> <span class="op">=</span> <span class="ident">RuntimeBlockWeights</span>;
 	<span class="kw">type</span> <span class="ident">BlockLength</span> <span class="op">=</span> <span class="ident">RuntimeBlockLength</span>;
 	<span class="kw">type</span> <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">AccountId</span>;
-	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeCall</span> <span class="op">=</span> <span class="ident">RuntimeCall</span>;
 	<span class="kw">type</span> <span class="ident">Lookup</span> <span class="op">=</span> <span class="ident">AccountIdLookup</span><span class="op">&lt;</span><span class="ident">AccountId</span>, ()<span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">Index</span> <span class="op">=</span> <span class="ident">Index</span>;
 	<span class="kw">type</span> <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="ident">BlockNumber</span>;
 	<span class="kw">type</span> <span class="ident">Hash</span> <span class="op">=</span> <span class="ident">Hash</span>;
 	<span class="kw">type</span> <span class="ident">Hashing</span> <span class="op">=</span> <span class="ident">BlakeTwo256</span>;
 	<span class="kw">type</span> <span class="ident">Header</span> <span class="op">=</span> <span class="ident">Header</span>;
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">Origin</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeOrigin</span> <span class="op">=</span> <span class="ident">RuntimeOrigin</span>;
 	<span class="kw">type</span> <span class="ident">BlockHashCount</span> <span class="op">=</span> <span class="ident">BlockHashCount</span>;
 	<span class="kw">type</span> <span class="ident">DbWeight</span> <span class="op">=</span> <span class="ident">RocksDbWeight</span>;
 	<span class="kw">type</span> <span class="ident">Version</span> <span class="op">=</span> <span class="ident">Version</span>;
@@ -1147,9 +1128,10 @@
 	<span class="kw">type</span> <span class="ident">OnNewAccount</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">OnKilledAccount</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">AccountData</span> <span class="op">=</span> <span class="ident">pallet_balances::AccountData</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">SystemWeightInfo</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">SystemWeightInfo</span> <span class="op">=</span> <span class="ident">weights::frame_system::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">SS58Prefix</span> <span class="op">=</span> <span class="ident">SS58Prefix</span>;
 	<span class="kw">type</span> <span class="ident">OnSetCode</span> <span class="op">=</span> <span class="ident">cumulus_pallet_parachain_system::ParachainSetCode</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">MaxConsumers</span> <span class="op">=</span> <span class="ident">frame_support::traits::ConstU32</span><span class="op">&lt;</span><span class="number">16</span><span class="op">&gt;</span>;
 }
 
 <span class="macro">parameter_types!</span> {
@@ -1186,7 +1168,7 @@
 	<span class="doccomment">/// The type for recording an account&#39;s balance.</span>
 	<span class="kw">type</span> <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">Balance</span>;
 	<span class="doccomment">/// The ubiquitous event type.</span>
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
 	<span class="kw">type</span> <span class="ident">DustRemoval</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">ExistentialDeposit</span> <span class="op">=</span> <span class="ident">ExistentialDeposit</span>;
 	<span class="kw">type</span> <span class="ident">AccountStore</span> <span class="op">=</span> <span class="ident">System</span>;
@@ -1202,16 +1184,18 @@
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_transaction_payment::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
 	<span class="kw">type</span> <span class="ident">OnChargeTransaction</span> <span class="op">=</span>
 		<span class="ident">pallet_transaction_payment::CurrencyAdapter</span><span class="op">&lt;</span><span class="ident">Balances</span>, <span class="ident">DealWithFees</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">TransactionByteFee</span> <span class="op">=</span> <span class="ident">TransactionByteFee</span>;
 	<span class="kw">type</span> <span class="ident">WeightToFee</span> <span class="op">=</span> <span class="ident">WeightToFee</span>;
+	<span class="kw">type</span> <span class="ident">LengthToFee</span> <span class="op">=</span> <span class="ident">ConstantMultiplier</span><span class="op">&lt;</span><span class="ident">Balance</span>, <span class="ident">TransactionByteFee</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">FeeMultiplierUpdate</span> <span class="op">=</span> <span class="ident">SlowAdjustingFeeUpdate</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">OperationalFeeMultiplier</span> <span class="op">=</span> <span class="ident">OperationalFeeMultiplier</span>;
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span>; <span class="comment">// 1 UNIT deposit to create asset</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">10</span>; <span class="comment">// 1 / 10 UNITS deposit to create asset</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetAccountDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">16</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ApprovalDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">EXISTENTIAL_DEPOSIT</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AssetsStringLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">50</span>;
 	<span class="doccomment">/// Key = 32 bytes, Value = 36 bytes (32+1+1+1+1)</span>
@@ -1222,14 +1206,11 @@
 }
 
 <span class="doccomment">/// We allow root and the Relay Chain council to execute privileged asset operations.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AssetsForceOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
-	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AssetsForceOrigin</span> <span class="op">=</span>
+	<span class="ident">EitherOfDiverse</span><span class="op">&lt;</span><span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>, <span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">pallet_assets::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
 	<span class="kw">type</span> <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">Balance</span>;
 	<span class="kw">type</span> <span class="ident">AssetId</span> <span class="op">=</span> <span class="ident">AssetId</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
@@ -1242,34 +1223,7 @@
 	<span class="kw">type</span> <span class="ident">Freezer</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">Extra</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_assets::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
-}
-
-<span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ClassDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span>; <span class="comment">// 1 UNIT deposit to create asset class</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">InstanceDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">100</span>; <span class="comment">// 1/100 UNIT deposit to create asset instance</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KeyLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">32</span>;	<span class="comment">// Max 32 bytes per key</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ValueLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">64</span>;	<span class="comment">// Max 64 bytes per value</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UniquesMetadataDepositBase</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">129</span>);
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AttributeDepositBase</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">0</span>);
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DepositPerByte</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">0</span>, <span class="number">1</span>);
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UniquesStringLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">128</span>;
-}
-
-<span class="kw">impl</span> <span class="ident">pallet_uniques::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">ClassId</span> <span class="op">=</span> <span class="ident">u32</span>;
-	<span class="kw">type</span> <span class="ident">InstanceId</span> <span class="op">=</span> <span class="ident">u32</span>;
-	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
-	<span class="kw">type</span> <span class="ident">ForceOrigin</span> <span class="op">=</span> <span class="ident">AssetsForceOrigin</span>;
-	<span class="kw">type</span> <span class="ident">ClassDeposit</span> <span class="op">=</span> <span class="ident">ClassDeposit</span>;
-	<span class="kw">type</span> <span class="ident">InstanceDeposit</span> <span class="op">=</span> <span class="ident">InstanceDeposit</span>;
-	<span class="kw">type</span> <span class="ident">MetadataDepositBase</span> <span class="op">=</span> <span class="ident">UniquesMetadataDepositBase</span>;
-	<span class="kw">type</span> <span class="ident">AttributeDepositBase</span> <span class="op">=</span> <span class="ident">AttributeDepositBase</span>;
-	<span class="kw">type</span> <span class="ident">DepositPerByte</span> <span class="op">=</span> <span class="ident">DepositPerByte</span>;
-	<span class="kw">type</span> <span class="ident">StringLimit</span> <span class="op">=</span> <span class="ident">UniquesStringLimit</span>;
-	<span class="kw">type</span> <span class="ident">KeyLimit</span> <span class="op">=</span> <span class="ident">KeyLimit</span>;
-	<span class="kw">type</span> <span class="ident">ValueLimit</span> <span class="op">=</span> <span class="ident">ValueLimit</span>;
-	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_uniques::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">AssetAccountDeposit</span> <span class="op">=</span> <span class="ident">AssetAccountDeposit</span>;
 }
 
 <span class="macro">parameter_types!</span> {
@@ -1281,8 +1235,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_multisig::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeCall</span> <span class="op">=</span> <span class="ident">RuntimeCall</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
 	<span class="kw">type</span> <span class="ident">DepositBase</span> <span class="op">=</span> <span class="ident">DepositBase</span>;
 	<span class="kw">type</span> <span class="ident">DepositFactor</span> <span class="op">=</span> <span class="ident">DepositFactor</span>;
@@ -1291,8 +1245,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_utility::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeCall</span> <span class="op">=</span> <span class="ident">RuntimeCall</span>;
+	<span class="kw">type</span> <span class="ident">PalletsOrigin</span> <span class="op">=</span> <span class="ident">OriginCaller</span>;
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_utility::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
@@ -1335,90 +1290,103 @@
 	<span class="ident">AssetOwner</span>,
 	<span class="doccomment">/// Asset manager. Can execute calls related to asset management.</span>
 	<span class="ident">AssetManager</span>,
-	<span class="comment">// Collator selection proxy. Can execute calls related to collator selection mechanism.</span>
+	<span class="doccomment">/// Collator selection proxy. Can execute calls related to collator selection mechanism.</span>
 	<span class="ident">Collator</span>,
 }
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ProxyType</span> {
-	<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="self">Self</span><span class="ident">::Any</span>
+	<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+		<span class="ident"><span class="self">Self</span>::Any</span>
 	}
 }
-<span class="kw">impl</span> <span class="ident">InstanceFilter</span><span class="op">&lt;</span><span class="ident">Call</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ProxyType</span> {
-	<span class="kw">fn</span> <span class="ident">filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="ident">Call</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">impl</span> <span class="ident">InstanceFilter</span><span class="op">&lt;</span><span class="ident">RuntimeCall</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ProxyType</span> {
+	<span class="kw">fn</span> <span class="ident">filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="ident">RuntimeCall</span>) -&gt; <span class="ident">bool</span> {
 		<span class="kw">match</span> <span class="self">self</span> {
-			<span class="ident">ProxyType::Any</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-			<span class="ident">ProxyType::NonTransfer</span> <span class="op">=</span><span class="op">&gt;</span>
-				<span class="op">!</span><span class="macro">matches!</span>(<span class="ident">c</span>, <span class="ident">Call::Balances</span> { .. } <span class="op">|</span> <span class="ident">Call::Assets</span> { .. } <span class="op">|</span> <span class="ident">Call::Uniques</span> { .. }),
-			<span class="ident">ProxyType::CancelProxy</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">matches!</span>(
+			<span class="ident">ProxyType::Any</span> =&gt; <span class="bool-val">true</span>,
+			<span class="ident">ProxyType::NonTransfer</span> =&gt; <span class="op">!</span><span class="macro">matches!</span>(
 				<span class="ident">c</span>,
-				<span class="ident">Call::Proxy</span>(<span class="ident">pallet_proxy::Call::reject_announcement</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. }
+				<span class="ident">RuntimeCall::Balances</span> { .. } <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span> { .. } <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span> { .. }
 			),
-			<span class="ident">ProxyType::Assets</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">ProxyType::CancelProxy</span> =&gt; <span class="macro">matches!</span>(
+				<span class="ident">c</span>,
+				<span class="ident">RuntimeCall::Proxy</span>(<span class="ident">pallet_proxy::Call::reject_announcement</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Utility</span> { .. } <span class="op">|</span>
+					<span class="ident">RuntimeCall::Multisig</span> { .. }
+			),
+			<span class="ident">ProxyType::Assets</span> =&gt; {
 				<span class="macro">matches!</span>(
 					<span class="ident">c</span>,
-					<span class="ident">Call::Assets</span> { .. } <span class="op">|</span>
-						<span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. } <span class="op">|</span>
-						<span class="ident">Call::Uniques</span> { .. }
+					<span class="ident">RuntimeCall::Assets</span> { .. } <span class="op">|</span>
+						<span class="ident">RuntimeCall::Utility</span> { .. } <span class="op">|</span>
+						<span class="ident">RuntimeCall::Multisig</span> { .. } <span class="op">|</span>
+						<span class="ident">RuntimeCall::Uniques</span> { .. }
 				)
 			},
-			<span class="ident">ProxyType::AssetOwner</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">matches!</span>(
+			<span class="ident">ProxyType::AssetOwner</span> =&gt; <span class="macro">matches!</span>(
 				<span class="ident">c</span>,
-				<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::create</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::destroy</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::transfer_ownership</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::set_team</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::set_metadata</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::clear_metadata</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::create</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::destroy</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::transfer_ownership</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_team</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_metadata</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_attribute</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::set_class_metadata</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_metadata</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_attribute</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_class_metadata</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. }
+				<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::create</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::destroy</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::transfer_ownership</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::set_team</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::set_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::clear_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::create</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::destroy</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::transfer_ownership</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::set_team</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::set_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::set_attribute</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::set_collection_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_attribute</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::clear_collection_metadata</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::set_collection_max_supply</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Utility</span> { .. } <span class="op">|</span>
+					<span class="ident">RuntimeCall::Multisig</span> { .. }
 			),
-			<span class="ident">ProxyType::AssetManager</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">matches!</span>(
+			<span class="ident">ProxyType::AssetManager</span> =&gt; <span class="macro">matches!</span>(
 				<span class="ident">c</span>,
-				<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::mint</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::burn</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::freeze</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::thaw</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::freeze_asset</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Assets</span>(<span class="ident">pallet_assets::Call::thaw_asset</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::mint</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::burn</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::freeze</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::thaw</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::freeze_class</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Uniques</span>(<span class="ident">pallet_uniques::Call::thaw_class</span> { .. }) <span class="op">|</span>
-					<span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. }
+				<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::mint</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::burn</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::freeze</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::thaw</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::freeze_asset</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Assets</span>(<span class="ident">pallet_assets::Call::thaw_asset</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::mint</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::burn</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::freeze</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::thaw</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::freeze_collection</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Uniques</span>(<span class="ident">pallet_uniques::Call::thaw_collection</span> { .. }) <span class="op">|</span>
+					<span class="ident">RuntimeCall::Utility</span> { .. } <span class="op">|</span>
+					<span class="ident">RuntimeCall::Multisig</span> { .. }
 			),
-			<span class="ident">ProxyType::Collator</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">matches!</span>(
+			<span class="ident">ProxyType::Collator</span> =&gt; <span class="macro">matches!</span>(
 				<span class="ident">c</span>,
-				<span class="ident">Call::CollatorSelection</span> { .. } <span class="op">|</span> <span class="ident">Call::Utility</span> { .. } <span class="op">|</span> <span class="ident">Call::Multisig</span> { .. }
+				<span class="ident">RuntimeCall::CollatorSelection</span> { .. } <span class="op">|</span>
+					<span class="ident">RuntimeCall::Utility</span> { .. } <span class="op">|</span>
+					<span class="ident">RuntimeCall::Multisig</span> { .. }
 			),
 		}
 	}
-	<span class="kw">fn</span> <span class="ident">is_superset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">o</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+
+	<span class="kw">fn</span> <span class="ident">is_superset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">o</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
 		<span class="kw">match</span> (<span class="self">self</span>, <span class="ident">o</span>) {
-			(<span class="ident">x</span>, <span class="ident">y</span>) <span class="kw">if</span> <span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="ident">y</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-			(<span class="ident">ProxyType::Any</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-			(<span class="kw">_</span>, <span class="ident">ProxyType::Any</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-			(<span class="ident">ProxyType::Assets</span>, <span class="ident">ProxyType::AssetOwner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-			(<span class="ident">ProxyType::Assets</span>, <span class="ident">ProxyType::AssetManager</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+			(<span class="ident">x</span>, <span class="ident">y</span>) <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="ident">y</span> =&gt; <span class="bool-val">true</span>,
+			(<span class="ident">ProxyType::Any</span>, <span class="kw">_</span>) =&gt; <span class="bool-val">true</span>,
+			(<span class="kw">_</span>, <span class="ident">ProxyType::Any</span>) =&gt; <span class="bool-val">false</span>,
+			(<span class="ident">ProxyType::Assets</span>, <span class="ident">ProxyType::AssetOwner</span>) =&gt; <span class="bool-val">true</span>,
+			(<span class="ident">ProxyType::Assets</span>, <span class="ident">ProxyType::AssetManager</span>) =&gt; <span class="bool-val">true</span>,
+			(<span class="ident">ProxyType::NonTransfer</span>, <span class="ident">ProxyType::Collator</span>) =&gt; <span class="bool-val">true</span>,
+			<span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
 		}
 	}
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_proxy::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeCall</span> <span class="op">=</span> <span class="ident">RuntimeCall</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
 	<span class="kw">type</span> <span class="ident">ProxyType</span> <span class="op">=</span> <span class="ident">ProxyType</span>;
 	<span class="kw">type</span> <span class="ident">ProxyDepositBase</span> <span class="op">=</span> <span class="ident">ProxyDepositBase</span>;
@@ -1432,210 +1400,54 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedXcmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span> <span class="op">/</span> <span class="number">4</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedDmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span> <span class="op">/</span> <span class="number">4</span>;
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedXcmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>.<span class="ident">saturating_div</span>(<span class="number">4</span>);
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReservedDmpWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>.<span class="ident">saturating_div</span>(<span class="number">4</span>);
 }
 
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_parachain_system::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">OnValidationData</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
+	<span class="kw">type</span> <span class="ident">OnSystemEvent</span> <span class="op">=</span> ();
 	<span class="kw">type</span> <span class="ident">SelfParaId</span> <span class="op">=</span> <span class="ident">parachain_info::Pallet</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">DmpMessageHandler</span> <span class="op">=</span> <span class="ident">DmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">ReservedDmpWeight</span> <span class="op">=</span> <span class="ident">ReservedDmpWeight</span>;
 	<span class="kw">type</span> <span class="ident">OutboundXcmpMessageSource</span> <span class="op">=</span> <span class="ident">XcmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">XcmpMessageHandler</span> <span class="op">=</span> <span class="ident">XcmpQueue</span>;
 	<span class="kw">type</span> <span class="ident">ReservedXcmpWeight</span> <span class="op">=</span> <span class="ident">ReservedXcmpWeight</span>;
+	<span class="kw">type</span> <span class="ident">CheckAssociatedRelayNumber</span> <span class="op">=</span> <span class="ident">RelayNumberStrictlyIncreases</span>;
 }
-
-<span class="kw">impl</span> <span class="ident">pallet_randomness_collective_flip::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
 <span class="kw">impl</span> <span class="ident">parachain_info::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_aura_ext::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
-<span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KsmLocation</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">MultiLocation::parent</span>();
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RelayNetwork</span>: <span class="ident">NetworkId</span> <span class="op">=</span> <span class="ident">NetworkId::Kusama</span>;
-	<span class="kw">pub</span> <span class="ident">RelayChainOrigin</span>: <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">cumulus_pallet_xcm::Origin::Relay</span>.<span class="ident">into</span>();
-	<span class="kw">pub</span> <span class="ident">Ancestry</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">Parachain</span>(<span class="ident">ParachainInfo::parachain_id</span>().<span class="ident">into</span>()).<span class="ident">into</span>();
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">Local</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">Here</span>.<span class="ident">into</span>();
-	<span class="kw">pub</span> <span class="ident">CheckingAccount</span>: <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">PolkadotXcm::check_account</span>();
-}
-
-<span class="doccomment">/// Type for specifying how a `MultiLocation` can be converted into an `AccountId`. This is used</span>
-<span class="doccomment">/// when determining ownership of accounts for asset transacting and when attempting to use XCM</span>
-<span class="doccomment">/// `Transact` in order to determine the dispatch Origin.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LocationToAccountId</span> <span class="op">=</span> (
-	<span class="comment">// The parent (Relay-chain) origin converts to the default `AccountId`.</span>
-	<span class="ident">ParentIsDefault</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="comment">// Sibling parachain origins convert to AccountId via the `ParaId::into`.</span>
-	<span class="ident">SiblingParachainConvertsVia</span><span class="op">&lt;</span><span class="ident">Sibling</span>, <span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="comment">// Straight up local `AccountId32` origins just alias directly to `AccountId`.</span>
-	<span class="ident">AccountId32Aliases</span><span class="op">&lt;</span><span class="ident">RelayNetwork</span>, <span class="ident">AccountId</span><span class="op">&gt;</span>,
-);
-
-<span class="doccomment">/// Means for transacting the native currency on this chain.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CurrencyTransactor</span> <span class="op">=</span> <span class="ident">CurrencyAdapter</span><span class="op">&lt;</span>
-	<span class="comment">// Use this currency:</span>
-	<span class="ident">Balances</span>,
-	<span class="comment">// Use this currency when it is a fungible asset matching the given location or name:</span>
-	<span class="ident">IsConcrete</span><span class="op">&lt;</span><span class="ident">KsmLocation</span><span class="op">&gt;</span>,
-	<span class="comment">// Convert an XCM MultiLocation into a local account id:</span>
-	<span class="ident">LocationToAccountId</span>,
-	<span class="comment">// Our chain&#39;s account ID type (we can&#39;t get away without mentioning it explicitly):</span>
-	<span class="ident">AccountId</span>,
-	<span class="comment">// We don&#39;t track any teleports of `Balances`.</span>
-	(),
-<span class="op">&gt;</span>;
-
-<span class="doccomment">/// Means for transacting assets besides the native currency on this chain.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FungiblesTransactor</span> <span class="op">=</span> <span class="ident">FungiblesAdapter</span><span class="op">&lt;</span>
-	<span class="comment">// Use this fungibles implementation:</span>
-	<span class="ident">Assets</span>,
-	<span class="comment">// Use this currency when it is a fungible asset matching the given location or name:</span>
-	<span class="ident">ConvertedConcreteAssetId</span><span class="op">&lt;</span>
-		<span class="ident">AssetId</span>,
-		<span class="ident">Balance</span>,
-		<span class="ident">AsPrefixedGeneralIndex</span><span class="op">&lt;</span><span class="ident">Local</span>, <span class="ident">AssetId</span>, <span class="ident">JustTry</span><span class="op">&gt;</span>,
-		<span class="ident">JustTry</span>,
-	<span class="op">&gt;</span>,
-	<span class="comment">// Convert an XCM MultiLocation into a local account id:</span>
-	<span class="ident">LocationToAccountId</span>,
-	<span class="comment">// Our chain&#39;s account ID type (we can&#39;t get away without mentioning it explicitly):</span>
-	<span class="ident">AccountId</span>,
-	<span class="comment">// We only want to allow teleports of known assets. We use non-zero issuance as an indication</span>
-	<span class="comment">// that this asset is known.</span>
-	<span class="ident">NonZeroIssuance</span><span class="op">&lt;</span><span class="ident">AccountId</span>, <span class="ident">Assets</span><span class="op">&gt;</span>,
-	<span class="comment">// The account to use for tracking teleports.</span>
-	<span class="ident">CheckingAccount</span>,
-<span class="op">&gt;</span>;
-<span class="doccomment">/// Means for transacting assets on this chain.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AssetTransactors</span> <span class="op">=</span> (<span class="ident">CurrencyTransactor</span>, <span class="ident">FungiblesTransactor</span>);
-
-<span class="doccomment">/// This is the type we use to convert an (incoming) XCM origin into a local `Origin` instance,</span>
-<span class="doccomment">/// ready for dispatching a transaction with Xcm&#39;s `Transact`. There is an `OriginKind` which can</span>
-<span class="doccomment">/// biases the kind of local `Origin` it will become.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">XcmOriginToTransactDispatchOrigin</span> <span class="op">=</span> (
-	<span class="comment">// Sovereign account converter; this attempts to derive an `AccountId` from the origin location</span>
-	<span class="comment">// using `LocationToAccountId` and then turn that into the usual `Signed` origin. Useful for</span>
-	<span class="comment">// foreign chains who want to have a local sovereign account on this chain which they control.</span>
-	<span class="ident">SovereignSignedViaLocation</span><span class="op">&lt;</span><span class="ident">LocationToAccountId</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
-	<span class="comment">// Native converter for Relay-chain (Parent) location; will converts to a `Relay` origin when</span>
-	<span class="comment">// recognised.</span>
-	<span class="ident">RelayChainAsNative</span><span class="op">&lt;</span><span class="ident">RelayChainOrigin</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
-	<span class="comment">// Native converter for sibling Parachains; will convert to a `SiblingPara` origin when</span>
-	<span class="comment">// recognised.</span>
-	<span class="ident">SiblingParachainAsNative</span><span class="op">&lt;</span><span class="ident">cumulus_pallet_xcm::Origin</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
-	<span class="comment">// Superuser converter for the Relay-chain (Parent) location. This will allow it to issue a</span>
-	<span class="comment">// transaction from the Root origin.</span>
-	<span class="ident">ParentAsSuperuser</span><span class="op">&lt;</span><span class="ident">Origin</span><span class="op">&gt;</span>,
-	<span class="comment">// Native signed account converter; this just converts an `AccountId32` origin into a normal</span>
-	<span class="comment">// `Origin::Signed` origin of the same 32-byte value.</span>
-	<span class="ident">SignedAccountId32AsNative</span><span class="op">&lt;</span><span class="ident">RelayNetwork</span>, <span class="ident">Origin</span><span class="op">&gt;</span>,
-	<span class="comment">// Xcm origins can be represented natively under the Xcm pallet&#39;s Xcm origin.</span>
-	<span class="ident">XcmPassthrough</span><span class="op">&lt;</span><span class="ident">Origin</span><span class="op">&gt;</span>,
-);
-
-<span class="macro">parameter_types!</span> {
-	<span class="comment">// One XCM operation is 1_000_000_000 weight - almost certainly a conservative estimate.</span>
-	<span class="kw">pub</span> <span class="ident">UnitWeightCost</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxInstructions</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
-}
-
-<span class="macro">match_type!</span> {
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ParentOrParentsExecutivePlurality</span>: <span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">MultiLocation</span><span class="op">&gt;</span> <span class="op">=</span> {
-		<span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">1</span>, <span class="ident">interior</span>: <span class="ident">Here</span> } <span class="op">|</span>
-		<span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">1</span>, <span class="ident">interior</span>: <span class="ident">X1</span>(<span class="ident">Plurality</span> { <span class="ident">id</span>: <span class="ident">BodyId::Executive</span>, .. }) }
-	};
-}
-
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Barrier</span> <span class="op">=</span> (
-	<span class="ident">TakeWeightCredit</span>,
-	<span class="ident">AllowTopLevelPaidExecutionFrom</span><span class="op">&lt;</span><span class="ident">Everything</span><span class="op">&gt;</span>,
-	<span class="ident">AllowUnpaidExecutionFrom</span><span class="op">&lt;</span><span class="ident">ParentOrParentsExecutivePlurality</span><span class="op">&gt;</span>,
-	<span class="comment">// ^^^ Parent and its exec plurality get free execution</span>
-);
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">XcmConfig</span>;
-<span class="kw">impl</span> <span class="ident">Config</span> <span class="kw">for</span> <span class="ident">XcmConfig</span> {
-	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
-	<span class="kw">type</span> <span class="ident">XcmSender</span> <span class="op">=</span> <span class="ident">XcmRouter</span>;
-	<span class="comment">// How to withdraw and deposit an asset.</span>
-	<span class="kw">type</span> <span class="ident">AssetTransactor</span> <span class="op">=</span> <span class="ident">AssetTransactors</span>;
-	<span class="kw">type</span> <span class="ident">OriginConverter</span> <span class="op">=</span> <span class="ident">XcmOriginToTransactDispatchOrigin</span>;
-	<span class="kw">type</span> <span class="ident">IsReserve</span> <span class="op">=</span> <span class="ident">NativeAsset</span>;
-	<span class="kw">type</span> <span class="ident">IsTeleporter</span> <span class="op">=</span> <span class="ident">NativeAsset</span>; <span class="comment">// &lt;- should be enough to allow teleportation of KSM</span>
-	<span class="kw">type</span> <span class="ident">LocationInverter</span> <span class="op">=</span> <span class="ident">LocationInverter</span><span class="op">&lt;</span><span class="ident">Ancestry</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">Barrier</span> <span class="op">=</span> <span class="ident">Barrier</span>;
-	<span class="kw">type</span> <span class="ident">Weigher</span> <span class="op">=</span> <span class="ident">FixedWeightBounds</span><span class="op">&lt;</span><span class="ident">UnitWeightCost</span>, <span class="ident">Call</span>, <span class="ident">MaxInstructions</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">Trader</span> <span class="op">=</span> <span class="ident">UsingComponents</span><span class="op">&lt;</span><span class="ident">IdentityFee</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span>, <span class="ident">KsmLocation</span>, <span class="ident">AccountId</span>, <span class="ident">Balances</span>, ()<span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">ResponseHandler</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
-	<span class="kw">type</span> <span class="ident">AssetTrap</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
-	<span class="kw">type</span> <span class="ident">AssetClaims</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
-	<span class="kw">type</span> <span class="ident">SubscriptionService</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
-}
-
-<span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxDownwardMessageWeight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">MAXIMUM_BLOCK_WEIGHT</span> <span class="op">/</span> <span class="number">10</span>;
-}
-
-<span class="doccomment">/// No local origins on this chain are allowed to dispatch XCM sends/executions.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LocalOriginToLocation</span> <span class="op">=</span> <span class="ident">SignedToAccountId32</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">AccountId</span>, <span class="ident">RelayNetwork</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// The means for routing XCM messages which are not for local execution into the right message</span>
-<span class="doccomment">/// queues.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">XcmRouter</span> <span class="op">=</span> (
-	<span class="comment">// Two routers - use UMP to communicate with the relay chain:</span>
-	<span class="ident">cumulus_primitives_utility::ParentAsUmp</span><span class="op">&lt;</span><span class="ident">ParachainSystem</span>, ()<span class="op">&gt;</span>,
-	<span class="comment">// ..and XCMP to communicate with the sibling chains.</span>
-	<span class="ident">XcmpQueue</span>,
-);
-
-<span class="kw">impl</span> <span class="ident">pallet_xcm::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">SendXcmOrigin</span> <span class="op">=</span> <span class="ident">EnsureXcmOrigin</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">LocalOriginToLocation</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">XcmRouter</span> <span class="op">=</span> <span class="ident">XcmRouter</span>;
-	<span class="kw">type</span> <span class="ident">ExecuteXcmOrigin</span> <span class="op">=</span> <span class="ident">EnsureXcmOrigin</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">LocalOriginToLocation</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">XcmExecuteFilter</span> <span class="op">=</span> <span class="ident">Everything</span>;
-	<span class="kw">type</span> <span class="ident">XcmExecutor</span> <span class="op">=</span> <span class="ident">XcmExecutor</span><span class="op">&lt;</span><span class="ident">XcmConfig</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">XcmTeleportFilter</span> <span class="op">=</span> <span class="ident">Everything</span>;
-	<span class="kw">type</span> <span class="ident">XcmReserveTransferFilter</span> <span class="op">=</span> <span class="ident">Everything</span>;
-	<span class="kw">type</span> <span class="ident">Weigher</span> <span class="op">=</span> <span class="ident">FixedWeightBounds</span><span class="op">&lt;</span><span class="ident">UnitWeightCost</span>, <span class="ident">Call</span>, <span class="ident">MaxInstructions</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">LocationInverter</span> <span class="op">=</span> <span class="ident">LocationInverter</span><span class="op">&lt;</span><span class="ident">Ancestry</span><span class="op">&gt;</span>;
-	<span class="kw">type</span> <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">Origin</span>;
-	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
-
-	<span class="kw">const</span> <span class="ident">VERSION_DISCOVERY_QUEUE_SIZE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
-	<span class="kw">type</span> <span class="ident">AdvertisedXcmVersion</span> <span class="op">=</span> <span class="ident">pallet_xcm::CurrentXcmVersion</span>;
-}
-
-<span class="kw">impl</span> <span class="ident">cumulus_pallet_xcm::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">XcmExecutor</span> <span class="op">=</span> <span class="ident">XcmExecutor</span><span class="op">&lt;</span><span class="ident">XcmConfig</span><span class="op">&gt;</span>;
-}
-
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_xcmp_queue::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
 	<span class="kw">type</span> <span class="ident">XcmExecutor</span> <span class="op">=</span> <span class="ident">XcmExecutor</span><span class="op">&lt;</span><span class="ident">XcmConfig</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">ChannelInfo</span> <span class="op">=</span> <span class="ident">ParachainSystem</span>;
-	<span class="kw">type</span> <span class="ident">VersionWrapper</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">VersionWrapper</span> <span class="op">=</span> <span class="ident">PolkadotXcm</span>;
+	<span class="kw">type</span> <span class="ident">ExecuteOverweightOrigin</span> <span class="op">=</span> <span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">ControllerOrigin</span> <span class="op">=</span> <span class="ident">EitherOfDiverse</span><span class="op">&lt;</span>
+		<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
+		<span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">ControllerOriginConverter</span> <span class="op">=</span> <span class="ident">xcm_config::XcmOriginToTransactDispatchOrigin</span>;
+	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::cumulus_pallet_xcmp_queue::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">cumulus_pallet_dmp_queue::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
 	<span class="kw">type</span> <span class="ident">XcmExecutor</span> <span class="op">=</span> <span class="ident">XcmExecutor</span><span class="op">&lt;</span><span class="ident">XcmConfig</span><span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">ExecuteOverweightOrigin</span> <span class="op">=</span> <span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>;
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DisabledValidatorsThreshold</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::from_percent</span>(<span class="number">33</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">Period</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">6</span> <span class="op">*</span> <span class="ident">HOURS</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">Offset</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxAuthorities</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100_000</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_session::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
 	<span class="kw">type</span> <span class="ident">ValidatorId</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::AccountId</span>;
 	<span class="comment">// we don&#39;t have stash and controller, thus we don&#39;t need the convert as well.</span>
 	<span class="kw">type</span> <span class="ident">ValidatorIdOf</span> <span class="op">=</span> <span class="ident">pallet_collator_selection::IdentityCollator</span>;
@@ -1645,7 +1457,6 @@
 	<span class="comment">// Essentially just Aura, but lets be pedantic.</span>
 	<span class="kw">type</span> <span class="ident">SessionHandler</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">SessionKeys</span> <span class="kw">as</span> <span class="ident">sp_runtime::traits::OpaqueKeys</span><span class="op">&gt;</span><span class="ident">::KeyTypeIdProviders</span>;
 	<span class="kw">type</span> <span class="ident">Keys</span> <span class="op">=</span> <span class="ident">SessionKeys</span>;
-	<span class="kw">type</span> <span class="ident">DisabledValidatorsThreshold</span> <span class="op">=</span> <span class="ident">DisabledValidatorsThreshold</span>;
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_session::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
@@ -1664,14 +1475,11 @@
 }
 
 <span class="doccomment">/// We allow root and the Relay Chain council to execute privileged collator selection operations.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CollatorSelectionUpdateOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
-	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
-	<span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CollatorSelectionUpdateOrigin</span> <span class="op">=</span>
+	<span class="ident">EitherOfDiverse</span><span class="op">&lt;</span><span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>, <span class="ident">EnsureXcm</span><span class="op">&lt;</span><span class="ident">IsMajorityOfBody</span><span class="op">&lt;</span><span class="ident">KsmLocation</span>, <span class="ident">ExecutiveBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">pallet_collator_selection::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
 	<span class="kw">type</span> <span class="ident">UpdateOrigin</span> <span class="op">=</span> <span class="ident">CollatorSelectionUpdateOrigin</span>;
 	<span class="kw">type</span> <span class="ident">PotId</span> <span class="op">=</span> <span class="ident">PotId</span>;
@@ -1686,6 +1494,47 @@
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_collator_selection::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
+<span class="kw">impl</span> <span class="ident">pallet_asset_tx_payment::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
+	<span class="kw">type</span> <span class="ident">Fungibles</span> <span class="op">=</span> <span class="ident">Assets</span>;
+	<span class="kw">type</span> <span class="ident">OnChargeAssetTransaction</span> <span class="op">=</span> <span class="ident">pallet_asset_tx_payment::FungiblesAdapter</span><span class="op">&lt;</span>
+		<span class="ident">pallet_assets::BalanceToAssetBalance</span><span class="op">&lt;</span><span class="ident">Balances</span>, <span class="ident">Runtime</span>, <span class="ident">ConvertInto</span><span class="op">&gt;</span>,
+		<span class="ident">AssetsToBlockAuthor</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
+	<span class="op">&gt;</span>;
+}
+
+<span class="macro">parameter_types!</span> {
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CollectionDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">10</span>; <span class="comment">// 1 / 10 UNIT deposit to create asset class</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ItemDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">UNITS</span> <span class="op">/</span> <span class="number">1_000</span>; <span class="comment">// 1 / 1000 UNIT deposit to create asset instance</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KeyLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">32</span>;	<span class="comment">// Max 32 bytes per key</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ValueLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">64</span>;	<span class="comment">// Max 64 bytes per value</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UniquesMetadataDepositBase</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">129</span>);
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AttributeDepositBase</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">1</span>, <span class="number">0</span>);
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DepositPerByte</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">0</span>, <span class="number">1</span>);
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UniquesStringLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">128</span>;
+}
+
+<span class="kw">impl</span> <span class="ident">pallet_uniques::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+	<span class="kw">type</span> <span class="ident">RuntimeEvent</span> <span class="op">=</span> <span class="ident">RuntimeEvent</span>;
+	<span class="kw">type</span> <span class="ident">CollectionId</span> <span class="op">=</span> <span class="ident">u32</span>;
+	<span class="kw">type</span> <span class="ident">ItemId</span> <span class="op">=</span> <span class="ident">u32</span>;
+	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
+	<span class="kw">type</span> <span class="ident">ForceOrigin</span> <span class="op">=</span> <span class="ident">AssetsForceOrigin</span>;
+	<span class="kw">type</span> <span class="ident">CollectionDeposit</span> <span class="op">=</span> <span class="ident">CollectionDeposit</span>;
+	<span class="kw">type</span> <span class="ident">ItemDeposit</span> <span class="op">=</span> <span class="ident">ItemDeposit</span>;
+	<span class="kw">type</span> <span class="ident">MetadataDepositBase</span> <span class="op">=</span> <span class="ident">UniquesMetadataDepositBase</span>;
+	<span class="kw">type</span> <span class="ident">AttributeDepositBase</span> <span class="op">=</span> <span class="ident">AttributeDepositBase</span>;
+	<span class="kw">type</span> <span class="ident">DepositPerByte</span> <span class="op">=</span> <span class="ident">DepositPerByte</span>;
+	<span class="kw">type</span> <span class="ident">StringLimit</span> <span class="op">=</span> <span class="ident">UniquesStringLimit</span>;
+	<span class="kw">type</span> <span class="ident">KeyLimit</span> <span class="op">=</span> <span class="ident">KeyLimit</span>;
+	<span class="kw">type</span> <span class="ident">ValueLimit</span> <span class="op">=</span> <span class="ident">ValueLimit</span>;
+	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_uniques::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
+	<span class="kw">type</span> <span class="ident">Helper</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">CreateOrigin</span> <span class="op">=</span> <span class="ident">AsEnsureOriginWithArg</span><span class="op">&lt;</span><span class="ident">EnsureSigned</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">Locker</span> <span class="op">=</span> ();
+}
+
 <span class="comment">// Create the runtime by composing the FRAME pallets that were previously configured.</span>
 <span class="macro">construct_runtime!</span>(
 	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Runtime</span> <span class="kw">where</span>
@@ -1698,15 +1547,16 @@
 		<span class="ident">ParachainSystem</span>: <span class="ident">cumulus_pallet_parachain_system</span>::{
 			<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Config</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">ValidateUnsigned</span>,
 		} <span class="op">=</span> <span class="number">1</span>,
-		<span class="ident">RandomnessCollectiveFlip</span>: <span class="ident">pallet_randomness_collective_flip</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">2</span>,
+		<span class="comment">// RandomnessCollectiveFlip = 2 removed</span>
 		<span class="ident">Timestamp</span>: <span class="ident">pallet_timestamp</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Inherent</span>} <span class="op">=</span> <span class="number">3</span>,
 		<span class="ident">ParachainInfo</span>: <span class="ident">parachain_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">4</span>,
 
 		<span class="comment">// Monetary stuff.</span>
 		<span class="ident">Balances</span>: <span class="ident">pallet_balances</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">10</span>,
-		<span class="ident">TransactionPayment</span>: <span class="ident">pallet_transaction_payment</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">11</span>,
+		<span class="ident">TransactionPayment</span>: <span class="ident">pallet_transaction_payment</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">11</span>,
+		<span class="ident">AssetTxPayment</span>: <span class="ident">pallet_asset_tx_payment</span>::{<span class="ident">Pallet</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">12</span>,
 
-		<span class="comment">// Collator support. the order of these 4 are important and shall not change.</span>
+		<span class="comment">// Collator support. the order of these 5 are important and shall not change.</span>
 		<span class="ident">Authorship</span>: <span class="ident">pallet_authorship</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">20</span>,
 		<span class="ident">CollatorSelection</span>: <span class="ident">pallet_collator_selection</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">21</span>,
 		<span class="ident">Session</span>: <span class="ident">pallet_session</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span>, <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">22</span>,
@@ -1715,7 +1565,7 @@
 
 		<span class="comment">// XCM helpers.</span>
 		<span class="ident">XcmpQueue</span>: <span class="ident">cumulus_pallet_xcmp_queue</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">30</span>,
-		<span class="ident">PolkadotXcm</span>: <span class="ident">pallet_xcm</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Origin</span>} <span class="op">=</span> <span class="number">31</span>,
+		<span class="ident">PolkadotXcm</span>: <span class="ident">pallet_xcm</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Origin</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">31</span>,
 		<span class="ident">CumulusXcm</span>: <span class="ident">cumulus_pallet_xcm</span>::{<span class="ident">Pallet</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Origin</span>} <span class="op">=</span> <span class="number">32</span>,
 		<span class="ident">DmpQueue</span>: <span class="ident">cumulus_pallet_dmp_queue</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">33</span>,
 
@@ -1724,7 +1574,7 @@
 		<span class="ident">Multisig</span>: <span class="ident">pallet_multisig</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">41</span>,
 		<span class="ident">Proxy</span>: <span class="ident">pallet_proxy</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">42</span>,
 
-		<span class="comment">// The main stage. To include pallet-assets-freezer and pallet-uniques.</span>
+		<span class="comment">// The main stage.</span>
 		<span class="ident">Assets</span>: <span class="ident">pallet_assets</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">50</span>,
 		<span class="ident">Uniques</span>: <span class="ident">pallet_uniques</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">51</span>,
 	}
@@ -1740,50 +1590,68 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BlockId</span> <span class="op">=</span> <span class="ident">generic::BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>;
 <span class="doccomment">/// The SignedExtension to the basic transaction logic.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SignedExtra</span> <span class="op">=</span> (
+	<span class="ident">frame_system::CheckNonZeroSender</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckSpecVersion</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckTxVersion</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckGenesis</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckEra</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckNonce</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">frame_system::CheckWeight</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
-	<span class="ident">pallet_transaction_payment::ChargeTransactionPayment</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
+	<span class="ident">pallet_asset_tx_payment::ChargeAssetTxPayment</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 );
 <span class="doccomment">/// Unchecked extrinsic type as expected by this runtime.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">generic::UncheckedExtrinsic</span><span class="op">&lt;</span><span class="ident">Address</span>, <span class="ident">Call</span>, <span class="ident">Signature</span>, <span class="ident">SignedExtra</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UncheckedExtrinsic</span> <span class="op">=</span>
+	<span class="ident">generic::UncheckedExtrinsic</span><span class="op">&lt;</span><span class="ident">Address</span>, <span class="ident">RuntimeCall</span>, <span class="ident">Signature</span>, <span class="ident">SignedExtra</span><span class="op">&gt;</span>;
 <span class="doccomment">/// Extrinsic type that has already been checked.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CheckedExtrinsic</span> <span class="op">=</span> <span class="ident">generic::CheckedExtrinsic</span><span class="op">&lt;</span><span class="ident">AccountId</span>, <span class="ident">Call</span>, <span class="ident">SignedExtra</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CheckedExtrinsic</span> <span class="op">=</span> <span class="ident">generic::CheckedExtrinsic</span><span class="op">&lt;</span><span class="ident">AccountId</span>, <span class="ident">RuntimeCall</span>, <span class="ident">SignedExtra</span><span class="op">&gt;</span>;
 <span class="doccomment">/// Executive: handles dispatch to the various modules.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Executive</span> <span class="op">=</span> <span class="ident">frame_executive::Executive</span><span class="op">&lt;</span>
 	<span class="ident">Runtime</span>,
 	<span class="ident">Block</span>,
 	<span class="ident">frame_system::ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">Runtime</span>,
-	<span class="ident">AllPallets</span>,
-	<span class="ident">OnRuntimeUpgrade</span>,
+	<span class="ident">AllPalletsWithSystem</span>,
+	(),
 <span class="op">&gt;</span>;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OnRuntimeUpgrade</span>;
-<span class="kw">impl</span> <span class="ident">frame_support::traits::OnRuntimeUpgrade</span> <span class="kw">for</span> <span class="ident">OnRuntimeUpgrade</span> {
-	<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-		<span class="ident">frame_support::migrations::migrate_from_pallet_version_to_storage_version</span>::<span class="op">&lt;</span>
-			<span class="ident">AllPalletsWithSystem</span>,
-		<span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">RocksDbWeight::get</span>())
-	}
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">frame_benchmarking</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">benches</span> {
+	<span class="macro">define_benchmarks!</span>(
+		[<span class="ident">frame_system</span>, <span class="ident">SystemBench</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>]
+		[<span class="ident">pallet_assets</span>, <span class="ident">Assets</span>]
+		[<span class="ident">pallet_balances</span>, <span class="ident">Balances</span>]
+		[<span class="ident">pallet_multisig</span>, <span class="ident">Multisig</span>]
+		[<span class="ident">pallet_proxy</span>, <span class="ident">Proxy</span>]
+		[<span class="ident">pallet_session</span>, <span class="ident">SessionBench</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>]
+		[<span class="ident">pallet_uniques</span>, <span class="ident">Uniques</span>]
+		[<span class="ident">pallet_utility</span>, <span class="ident">Utility</span>]
+		[<span class="ident">pallet_timestamp</span>, <span class="ident">Timestamp</span>]
+		[<span class="ident">pallet_collator_selection</span>, <span class="ident">CollatorSelection</span>]
+		[<span class="ident">cumulus_pallet_xcmp_queue</span>, <span class="ident">XcmpQueue</span>]
+		<span class="comment">// XCM</span>
+		<span class="comment">// NOTE: Make sure you point to the individual modules below.</span>
+		[<span class="ident">pallet_xcm_benchmarks::fungible</span>, <span class="ident">XcmBalances</span>]
+		[<span class="ident">pallet_xcm_benchmarks::generic</span>, <span class="ident">XcmGeneric</span>]
+	);
 }
 
 <span class="macro">impl_runtime_apis!</span> {
 	<span class="kw">impl</span> <span class="ident">sp_consensus_aura::AuraApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">AuraId</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">slot_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_consensus_aura::SlotDuration</span> {
+		<span class="kw">fn</span> <span class="ident">slot_duration</span>() -&gt; <span class="ident">sp_consensus_aura::SlotDuration</span> {
 			<span class="ident">sp_consensus_aura::SlotDuration::from_millis</span>(<span class="ident">Aura::slot_duration</span>())
 		}
 
-		<span class="kw">fn</span> <span class="ident">authorities</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AuraId</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">authorities</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AuraId</span><span class="op">&gt;</span> {
 			<span class="ident">Aura::authorities</span>().<span class="ident">into_inner</span>()
 		}
 	}
 
 	<span class="kw">impl</span> <span class="ident">sp_api::Core</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RuntimeVersion</span> {
+		<span class="kw">fn</span> <span class="ident">version</span>() -&gt; <span class="ident">RuntimeVersion</span> {
 			<span class="ident">VERSION</span>
 		}
 
@@ -1797,28 +1665,28 @@
 	}
 
 	<span class="kw">impl</span> <span class="ident">sp_api::Metadata</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">metadata</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OpaqueMetadata</span> {
+		<span class="kw">fn</span> <span class="ident">metadata</span>() -&gt; <span class="ident">OpaqueMetadata</span> {
 			<span class="ident">OpaqueMetadata::new</span>(<span class="ident">Runtime::metadata</span>().<span class="ident">into</span>())
 		}
 	}
 
 	<span class="kw">impl</span> <span class="ident">sp_block_builder::BlockBuilder</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">apply_extrinsic</span>(<span class="ident">extrinsic</span>: <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApplyExtrinsicResult</span> {
+		<span class="kw">fn</span> <span class="ident">apply_extrinsic</span>(<span class="ident">extrinsic</span>: <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span>) -&gt; <span class="ident">ApplyExtrinsicResult</span> {
 			<span class="ident">Executive::apply_extrinsic</span>(<span class="ident">extrinsic</span>)
 		}
 
-		<span class="kw">fn</span> <span class="ident">finalize_block</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Header</span> {
+		<span class="kw">fn</span> <span class="ident">finalize_block</span>() -&gt; <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Header</span> {
 			<span class="ident">Executive::finalize_block</span>()
 		}
 
-		<span class="kw">fn</span> <span class="ident">inherent_extrinsics</span>(<span class="ident">data</span>: <span class="ident">sp_inherents::InherentData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">inherent_extrinsics</span>(<span class="ident">data</span>: <span class="ident">sp_inherents::InherentData</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span><span class="op">&gt;</span> {
 			<span class="ident">data</span>.<span class="ident">create_extrinsics</span>()
 		}
 
 		<span class="kw">fn</span> <span class="ident">check_inherents</span>(
 			<span class="ident">block</span>: <span class="ident">Block</span>,
 			<span class="ident">data</span>: <span class="ident">sp_inherents::InherentData</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_inherents::CheckInherentsResult</span> {
+		) -&gt; <span class="ident">sp_inherents::CheckInherentsResult</span> {
 			<span class="ident">data</span>.<span class="ident">check_extrinsics</span>(<span class="kw-2">&amp;</span><span class="ident">block</span>)
 		}
 	}
@@ -1828,7 +1696,7 @@
 			<span class="ident">source</span>: <span class="ident">TransactionSource</span>,
 			<span class="ident">tx</span>: <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span>,
 			<span class="ident">block_hash</span>: <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TransactionValidity</span> {
+		) -&gt; <span class="ident">TransactionValidity</span> {
 			<span class="ident">Executive::validate_transaction</span>(<span class="ident">source</span>, <span class="ident">tx</span>, <span class="ident">block_hash</span>)
 		}
 	}
@@ -1840,19 +1708,19 @@
 	}
 
 	<span class="kw">impl</span> <span class="ident">sp_session::SessionKeys</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">generate_session_keys</span>(<span class="ident">seed</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">generate_session_keys</span>(<span class="ident">seed</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
 			<span class="ident">SessionKeys::generate</span>(<span class="ident">seed</span>)
 		}
 
 		<span class="kw">fn</span> <span class="ident">decode_session_keys</span>(
 			<span class="ident">encoded</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">KeyTypeId</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
+		) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">KeyTypeId</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
 			<span class="ident">SessionKeys::decode_into_raw_public_keys</span>(<span class="kw-2">&amp;</span><span class="ident">encoded</span>)
 		}
 	}
 
 	<span class="kw">impl</span> <span class="ident">frame_system_rpc_runtime_api::AccountNonceApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">AccountId</span>, <span class="ident">Index</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">account_nonce</span>(<span class="ident">account</span>: <span class="ident">AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Index</span> {
+		<span class="kw">fn</span> <span class="ident">account_nonce</span>(<span class="ident">account</span>: <span class="ident">AccountId</span>) -&gt; <span class="ident">Index</span> {
 			<span class="ident">System::account_nonce</span>(<span class="ident">account</span>)
 		}
 	}
@@ -1861,62 +1729,184 @@
 		<span class="kw">fn</span> <span class="ident">query_info</span>(
 			<span class="ident">uxt</span>: <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span>,
 			<span class="ident">len</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
+		) -&gt; <span class="ident">pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
 			<span class="ident">TransactionPayment::query_info</span>(<span class="ident">uxt</span>, <span class="ident">len</span>)
 		}
 		<span class="kw">fn</span> <span class="ident">query_fee_details</span>(
 			<span class="ident">uxt</span>: <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Extrinsic</span>,
 			<span class="ident">len</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">pallet_transaction_payment::FeeDetails</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
+		) -&gt; <span class="ident">pallet_transaction_payment::FeeDetails</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
 			<span class="ident">TransactionPayment::query_fee_details</span>(<span class="ident">uxt</span>, <span class="ident">len</span>)
 		}
 	}
 
+	<span class="kw">impl</span> <span class="ident">pallet_transaction_payment_rpc_runtime_api::TransactionPaymentCallApi</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Balance</span>, <span class="ident">RuntimeCall</span><span class="op">&gt;</span>
+		<span class="kw">for</span> <span class="ident">Runtime</span>
+	{
+		<span class="kw">fn</span> <span class="ident">query_call_info</span>(
+			<span class="ident">call</span>: <span class="ident">RuntimeCall</span>,
+			<span class="ident">len</span>: <span class="ident">u32</span>,
+		) -&gt; <span class="ident">pallet_transaction_payment::RuntimeDispatchInfo</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
+			<span class="ident">TransactionPayment::query_call_info</span>(<span class="ident">call</span>, <span class="ident">len</span>)
+		}
+		<span class="kw">fn</span> <span class="ident">query_call_fee_details</span>(
+			<span class="ident">call</span>: <span class="ident">RuntimeCall</span>,
+			<span class="ident">len</span>: <span class="ident">u32</span>,
+		) -&gt; <span class="ident">pallet_transaction_payment::FeeDetails</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
+			<span class="ident">TransactionPayment::query_call_fee_details</span>(<span class="ident">call</span>, <span class="ident">len</span>)
+		}
+	}
+
 	<span class="kw">impl</span> <span class="ident">cumulus_primitives_core::CollectCollationInfo</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">collect_collation_info</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">cumulus_primitives_core::CollationInfo</span> {
-			<span class="ident">ParachainSystem::collect_collation_info</span>()
+		<span class="kw">fn</span> <span class="ident">collect_collation_info</span>(<span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Header</span>) -&gt; <span class="ident">cumulus_primitives_core::CollationInfo</span> {
+			<span class="ident">ParachainSystem::collect_collation_info</span>(<span class="ident">header</span>)
+		}
+	}
+
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>)]</span>
+	<span class="kw">impl</span> <span class="ident">frame_try_runtime::TryRuntime</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+		<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() -&gt; (<span class="ident">Weight</span>, <span class="ident">Weight</span>) {
+			<span class="macro">log::info!</span>(<span class="string">&quot;try-runtime::on_runtime_upgrade statemine.&quot;</span>);
+			<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">Executive::try_runtime_upgrade</span>().<span class="ident">unwrap</span>();
+			(<span class="ident">weight</span>, <span class="ident">RuntimeBlockWeights::get</span>().<span class="ident">max_block</span>)
+		}
+
+		<span class="kw">fn</span> <span class="ident">execute_block</span>(<span class="ident">block</span>: <span class="ident">Block</span>, <span class="ident">state_root_check</span>: <span class="ident">bool</span>, <span class="ident">select</span>: <span class="ident">frame_try_runtime::TryStateSelect</span>) -&gt; <span class="ident">Weight</span> {
+			<span class="macro">log::info!</span>(
+				<span class="ident">target</span>: <span class="string">&quot;runtime::statemine&quot;</span>, <span class="string">&quot;try-runtime: executing block #{} ({:?}) / root checks: {:?} / sanity-checks: {:?}&quot;</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">number</span>,
+				<span class="ident">block</span>.<span class="ident">header</span>.<span class="ident">hash</span>(),
+				<span class="ident">state_root_check</span>,
+				<span class="ident">select</span>,
+			);
+			<span class="ident">Executive::try_execute_block</span>(<span class="ident">block</span>, <span class="ident">state_root_check</span>, <span class="ident">select</span>).<span class="ident">expect</span>(<span class="string">&quot;try_execute_block failed&quot;</span>)
 		}
 	}
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
 	<span class="kw">impl</span> <span class="ident">frame_benchmarking::Benchmark</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">benchmark_metadata</span>(<span class="ident">extra</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> (
+		<span class="kw">fn</span> <span class="ident">benchmark_metadata</span>(<span class="ident">extra</span>: <span class="ident">bool</span>) -&gt; (
 			<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_benchmarking::BenchmarkList</span><span class="op">&gt;</span>,
 			<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_support::traits::StorageInfo</span><span class="op">&gt;</span>,
 		) {
-			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">list_benchmark</span>, <span class="ident">Benchmarking</span>, <span class="ident">BenchmarkList</span>};
+			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkList</span>};
 			<span class="kw">use</span> <span class="ident">frame_support::traits::StorageInfoTrait</span>;
 			<span class="kw">use</span> <span class="ident">frame_system_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SystemBench</span>;
 			<span class="kw">use</span> <span class="ident">cumulus_pallet_session_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SessionBench</span>;
 
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">BenchmarkList</span><span class="op">&gt;</span><span class="ident">::new</span>();
+			<span class="comment">// This is defined once again in dispatch_benchmark, because list_benchmarks!</span>
+			<span class="comment">// and add_benchmarks! are macros exported by define_benchmarks! macros and those types</span>
+			<span class="comment">// are referenced in that call.</span>
+			<span class="kw">type</span> <span class="ident">XcmBalances</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::fungible::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+			<span class="kw">type</span> <span class="ident">XcmGeneric</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::generic::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">frame_system</span>, <span class="ident">SystemBench</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_assets</span>, <span class="ident">Assets</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_balances</span>, <span class="ident">Balances</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_multisig</span>, <span class="ident">Multisig</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_proxy</span>, <span class="ident">Proxy</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_session</span>, <span class="ident">SessionBench</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_uniques</span>, <span class="ident">Uniques</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_utility</span>, <span class="ident">Utility</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_timestamp</span>, <span class="ident">Timestamp</span>);
-			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_collator_selection</span>, <span class="ident">CollatorSelection</span>);
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">BenchmarkList</span><span class="op">&gt;</span><span class="ident">::new</span>();
+			<span class="macro">list_benchmarks!</span>(<span class="ident">list</span>, <span class="ident">extra</span>);
 
 			<span class="kw">let</span> <span class="ident">storage_info</span> <span class="op">=</span> <span class="ident">AllPalletsWithSystem::storage_info</span>();
-
 			<span class="kw">return</span> (<span class="ident">list</span>, <span class="ident">storage_info</span>)
 		}
 
 		<span class="kw">fn</span> <span class="ident">dispatch_benchmark</span>(
 			<span class="ident">config</span>: <span class="ident">frame_benchmarking::BenchmarkConfig</span>
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_benchmarking::BenchmarkBatch</span><span class="op">&gt;</span>, <span class="ident">sp_runtime::RuntimeString</span><span class="op">&gt;</span> {
-			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkBatch</span>, <span class="ident">add_benchmark</span>, <span class="ident">TrackedStorageKey</span>};
+		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_benchmarking::BenchmarkBatch</span><span class="op">&gt;</span>, <span class="ident">sp_runtime::RuntimeString</span><span class="op">&gt;</span> {
+			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkBatch</span>, <span class="ident">BenchmarkError</span>,
+				<span class="ident">TrackedStorageKey</span>};
 
 			<span class="kw">use</span> <span class="ident">frame_system_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SystemBench</span>;
 			<span class="kw">impl</span> <span class="ident">frame_system_benchmarking::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
 			<span class="kw">use</span> <span class="ident">cumulus_pallet_session_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SessionBench</span>;
 			<span class="kw">impl</span> <span class="ident">cumulus_pallet_session_benchmarking::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
+
+			<span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
+			<span class="kw">use</span> <span class="ident">xcm_config::KsmLocation</span>;
+			<span class="kw">use</span> <span class="ident">pallet_xcm_benchmarks::asset_instance_from</span>;
+
+			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+				<span class="kw">type</span> <span class="ident">XcmConfig</span> <span class="op">=</span> <span class="ident">xcm_config::XcmConfig</span>;
+				<span class="kw">type</span> <span class="ident">AccountIdConverter</span> <span class="op">=</span> <span class="ident">xcm_config::LocationToAccountId</span>;
+				<span class="kw">fn</span> <span class="ident">valid_destination</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">KsmLocation::get</span>())
+				}
+				<span class="kw">fn</span> <span class="ident">worst_case_holding</span>() -&gt; <span class="ident">MultiAssets</span> {
+					<span class="comment">// A mix of fungible, non-fungible, and concrete assets.</span>
+					<span class="kw">const</span> <span class="ident">HOLDING_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
+					<span class="kw">const</span> <span class="ident">HOLDING_NON_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
+					<span class="kw">let</span> <span class="ident">fungibles_amount</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">100</span>;
+					<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">assets</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">HOLDING_FUNGIBLES</span>)
+						.<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
+							<span class="ident">MultiAsset</span> {
+								<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">GeneralIndex</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u128</span>).<span class="ident">into</span>()),
+								<span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="ident">fungibles_amount</span> <span class="op">*</span> <span class="ident">i</span> <span class="kw">as</span> <span class="ident">u128</span>),
+							}
+							.<span class="ident">into</span>()
+						})
+						.<span class="ident">chain</span>(<span class="ident">core::iter::once</span>(<span class="ident">MultiAsset</span> { <span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">Here</span>.<span class="ident">into</span>()), <span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="ident">u128::MAX</span>) }))
+						.<span class="ident">chain</span>((<span class="number">0</span>..<span class="ident">HOLDING_NON_FUNGIBLES</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">MultiAsset</span> {
+							<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">GeneralIndex</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u128</span>).<span class="ident">into</span>()),
+							<span class="ident">fun</span>: <span class="ident">NonFungible</span>(<span class="ident">asset_instance_from</span>(<span class="ident">i</span>)),
+						}))
+						.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+
+						<span class="ident">assets</span>.<span class="ident">push</span>(<span class="ident">MultiAsset</span>{
+							<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">KsmLocation::get</span>()),
+							<span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">UNITS</span>),
+						});
+						<span class="ident">assets</span>.<span class="ident">into</span>()
+				}
+			}
+
+			<span class="macro">parameter_types!</span> {
+				<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TrustedTeleporter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiAsset</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">Some</span>((
+					<span class="ident">KsmLocation::get</span>(),
+					<span class="ident">MultiAsset</span> { <span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="number">1</span> <span class="op">*</span> <span class="ident">UNITS</span>), <span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">KsmLocation::get</span>()) },
+				));
+				<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TrustedReserve</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiAsset</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+				<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CheckedAccount</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+
+			}
+
+			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::fungible::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+				<span class="kw">type</span> <span class="ident">TransactAsset</span> <span class="op">=</span> <span class="ident">Balances</span>;
+
+				<span class="kw">type</span> <span class="ident">CheckedAccount</span> <span class="op">=</span> <span class="ident">CheckedAccount</span>;
+				<span class="kw">type</span> <span class="ident">TrustedTeleporter</span> <span class="op">=</span> <span class="ident">TrustedTeleporter</span>;
+				<span class="kw">type</span> <span class="ident">TrustedReserve</span> <span class="op">=</span> <span class="ident">TrustedReserve</span>;
+
+				<span class="kw">fn</span> <span class="ident">get_multi_asset</span>() -&gt; <span class="ident">MultiAsset</span> {
+					<span class="ident">MultiAsset</span> {
+						<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">KsmLocation::get</span>()),
+						<span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="number">1</span> <span class="op">*</span> <span class="ident">UNITS</span>),
+					}
+				}
+			}
+
+			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::generic::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+				<span class="kw">type</span> <span class="ident">RuntimeCall</span> <span class="op">=</span> <span class="ident">RuntimeCall</span>;
+
+				<span class="kw">fn</span> <span class="ident">worst_case_response</span>() -&gt; (<span class="ident">u64</span>, <span class="ident">Response</span>) {
+					(<span class="number">0u64</span>, <span class="ident">Response::Version</span>(<span class="ident">Default::default</span>()))
+				}
+
+				<span class="kw">fn</span> <span class="ident">transact_origin</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">KsmLocation::get</span>())
+				}
+
+				<span class="kw">fn</span> <span class="ident">subscribe_origin</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">KsmLocation::get</span>())
+				}
+
+				<span class="kw">fn</span> <span class="ident">claimable_asset</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiLocation</span>, <span class="ident">MultiAssets</span>), <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">KsmLocation::get</span>();
+					<span class="kw">let</span> <span class="ident">assets</span>: <span class="ident">MultiAssets</span> <span class="op">=</span> (<span class="ident">Concrete</span>(<span class="ident">KsmLocation::get</span>()), <span class="number">1_000</span> <span class="op">*</span> <span class="ident">UNITS</span>).<span class="ident">into</span>();
+					<span class="kw">let</span> <span class="ident">ticket</span> <span class="op">=</span> <span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">0</span>, <span class="ident">interior</span>: <span class="ident">Here</span> };
+					<span class="prelude-val">Ok</span>((<span class="ident">origin</span>, <span class="ident">ticket</span>, <span class="ident">assets</span>))
+				}
+			}
+
+			<span class="kw">type</span> <span class="ident">XcmBalances</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::fungible::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+			<span class="kw">type</span> <span class="ident">XcmGeneric</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::generic::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 
 			<span class="kw">let</span> <span class="ident">whitelist</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TrackedStorageKey</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[
 				<span class="comment">// Block Number</span>
@@ -1929,23 +1919,14 @@
 				<span class="macro">hex_literal::hex!</span>(<span class="string">&quot;26aa394eea5630e07c48ae0c9558cef70a98fdbe9ce6c55837576c60c7af3850&quot;</span>).<span class="ident">to_vec</span>().<span class="ident">into</span>(),
 				<span class="comment">// System Events</span>
 				<span class="macro">hex_literal::hex!</span>(<span class="string">&quot;26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7&quot;</span>).<span class="ident">to_vec</span>().<span class="ident">into</span>(),
+				<span class="comment">//TODO: use from relay_well_known_keys::ACTIVE_CONFIG</span>
+				<span class="macro">hex_literal::hex!</span>(<span class="string">&quot;06de3d8a54d27e44a9d5ce189618f22db4b49d95320d9021994c850f25b8e385&quot;</span>).<span class="ident">to_vec</span>().<span class="ident">into</span>(),
 			];
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">batches</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">BenchmarkBatch</span><span class="op">&gt;</span><span class="ident">::new</span>();
 			<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="ident">config</span>, <span class="kw-2">&amp;</span><span class="ident">whitelist</span>);
+			<span class="macro">add_benchmarks!</span>(<span class="ident">params</span>, <span class="ident">batches</span>);
 
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">frame_system</span>, <span class="ident">SystemBench</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_assets</span>, <span class="ident">Assets</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_balances</span>, <span class="ident">Balances</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_multisig</span>, <span class="ident">Multisig</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_proxy</span>, <span class="ident">Proxy</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_session</span>, <span class="ident">SessionBench</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_uniques</span>, <span class="ident">Uniques</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_utility</span>, <span class="ident">Utility</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_timestamp</span>, <span class="ident">Timestamp</span>);
-			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_collator_selection</span>, <span class="ident">CollatorSelection</span>);
-
-			<span class="kw">if</span> <span class="ident">batches</span>.<span class="ident">is_empty</span>() { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Benchmark not found for this pallet.&quot;</span>.<span class="ident">into</span>()) }
 			<span class="prelude-val">Ok</span>(<span class="ident">batches</span>)
 		}
 	}
@@ -1957,7 +1938,7 @@
 	<span class="kw">fn</span> <span class="ident">check_inherents</span>(
 		<span class="ident">block</span>: <span class="kw-2">&amp;</span><span class="ident">Block</span>,
 		<span class="ident">relay_state_proof</span>: <span class="kw-2">&amp;</span><span class="ident">cumulus_pallet_parachain_system::RelayChainStateProof</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_inherents::CheckInherentsResult</span> {
+	) -&gt; <span class="ident">sp_inherents::CheckInherentsResult</span> {
 		<span class="kw">let</span> <span class="ident">relay_chain_slot</span> <span class="op">=</span> <span class="ident">relay_state_proof</span>
 			.<span class="ident">read_slot</span>()
 			.<span class="ident">expect</span>(<span class="string">&quot;Could not read the relay chain slot from the proof&quot;</span>);
@@ -1970,7 +1951,7 @@
 			.<span class="ident">create_inherent_data</span>()
 			.<span class="ident">expect</span>(<span class="string">&quot;Could not create the timestamp inherent data&quot;</span>);
 
-		<span class="ident">inherent_data</span>.<span class="ident">check_extrinsics</span>(<span class="kw-2">&amp;</span><span class="ident">block</span>)
+		<span class="ident">inherent_data</span>.<span class="ident">check_extrinsics</span>(<span class="ident">block</span>)
 	}
 }
 
@@ -1979,7 +1960,5 @@
 	<span class="ident">BlockExecutor</span> <span class="op">=</span> <span class="ident">cumulus_pallet_aura_ext::BlockExecutor</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Executive</span><span class="op">&gt;</span>,
 	<span class="ident">CheckInherents</span> <span class="op">=</span> <span class="ident">CheckInherents</span>,
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="statemine_runtime" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
-</body></html>
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="statemine_runtime" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
